@@ -1,0 +1,26 @@
+<h1>TuningPro – Inventario</h1>
+
+<label>
+  Vehículo:
+  <select [(ngModel)]="vehiculoId">
+    <option [ngValue]="1">Toyota Supra (ABC-123)</option>
+    <option [ngValue]="2">Honda Civic (XYZ-789)</option>
+  </select>
+</label>
+
+<table border="1" cellpadding="6" style="margin-top: 12px; border-collapse: collapse;">
+  <tr>
+    <th>Código</th><th>Nombre</th><th>Categoría</th>
+    <th>Stock</th><th>Precio</th><th>Compatibilidad</th>
+  </tr>
+  <tr *ngFor="let p of piezas">
+    <td>{{ p.codigo }}</td>
+    <td>{{ p.nombre }}</td>
+    <td>{{ p.categoria }}</td>
+    <td>{{ p.stock }}</td>
+    <td>S/ {{ p.precioUnitario | number:'1.2-2' }}</td>
+    <td><button (click)="validar(p.id)">Validar</button></td>
+  </tr>
+</table>
+
+<p><strong>{{ resultado }}</strong></p>
