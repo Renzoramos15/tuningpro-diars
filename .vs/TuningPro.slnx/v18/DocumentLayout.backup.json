@@ -3,12 +3,8 @@
   "WorkspaceRootPath": "D:\\TuningPro\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{4F33D8C5-C3FF-AF04-CBA8-702013D702CD}|TuningPro.Data\\TuningPro.Data.csproj|d:\\tuningpro\\tuningpro.data\\repositories\\repositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4F33D8C5-C3FF-AF04-CBA8-702013D702CD}|TuningPro.Data\\TuningPro.Data.csproj|solutionrelative:tuningpro.data\\repositories\\repositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2217C64-B8CB-B45E-F12F-6FD074E963EA}|TuningPro.Business\\TuningPro.Business.csproj|d:\\tuningpro\\tuningpro.business\\services\\services.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -17,6 +13,18 @@
     {
       "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\controllers\\proyectoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\controllers\\proyectoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\models\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\models\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\controllers\\compatibilidadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -31,10 +39,6 @@
       "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\controllers\\vehiculoscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\models\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\models\\dtos.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|d:\\tuningpro\\tuningpro.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{36802E7E-3852-15EE-C245-D037C1646BB8}|TuningPro.Api\\TuningPro.Api.csproj|solutionrelative:tuningpro.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -45,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2217C64-B8CB-B45E-F12F-6FD074E963EA}|TuningPro.Business\\TuningPro.Business.csproj|d:\\tuningpro\\tuningpro.business\\config\\configuraciontaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2217C64-B8CB-B45E-F12F-6FD074E963EA}|TuningPro.Business\\TuningPro.Business.csproj|solutionrelative:tuningpro.business\\config\\configuraciontaller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4F33D8C5-C3FF-AF04-CBA8-702013D702CD}|TuningPro.Data\\TuningPro.Data.csproj|d:\\tuningpro\\tuningpro.data\\repositories\\repositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4F33D8C5-C3FF-AF04-CBA8-702013D702CD}|TuningPro.Data\\TuningPro.Data.csproj|solutionrelative:tuningpro.data\\repositories\\repositories.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4F33D8C5-C3FF-AF04-CBA8-702013D702CD}|TuningPro.Data\\TuningPro.Data.csproj|d:\\tuningpro\\tuningpro.data\\tuningprodbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -70,11 +70,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 11,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
               "Title": "launchSettings.json",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Properties\\launchSettings.json",
               "RelativeDocumentMoniker": "TuningPro.Api\\Properties\\launchSettings.json",
@@ -87,19 +87,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "ProyectosController.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Controllers\\ProyectosController.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Controllers\\ProyectosController.cs",
               "ToolTip": "D:\\TuningPro\\TuningPro.Api\\Controllers\\ProyectosController.cs",
               "RelativeToolTip": "TuningPro.Api\\Controllers\\ProyectosController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB8AAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAQwCoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-11T05:28:47.262Z"
+              "WhenOpened": "2026-10-11T05:28:47.262Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 6,
               "Title": "CompatibilidadController.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Controllers\\CompatibilidadController.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Controllers\\CompatibilidadController.cs",
@@ -111,7 +112,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 7,
               "Title": "PiezasController.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Controllers\\PiezasController.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Controllers\\PiezasController.cs",
@@ -123,7 +124,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
               "Title": "VehiculosController.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Controllers\\VehiculosController.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Controllers\\VehiculosController.cs",
@@ -135,19 +136,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 3,
               "Title": "Dtos.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Models\\Dtos.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Models\\Dtos.cs",
               "ToolTip": "D:\\TuningPro\\TuningPro.Api\\Models\\Dtos.cs",
               "RelativeToolTip": "TuningPro.Api\\Models\\Dtos.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAA5AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-11T05:24:02.564Z"
+              "WhenOpened": "2026-10-11T05:24:02.564Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\Program.cs",
               "RelativeDocumentMoniker": "TuningPro.Api\\Program.cs",
@@ -159,7 +161,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Api\\appsettings.json",
               "RelativeDocumentMoniker": "TuningPro.Api\\appsettings.json",
@@ -167,25 +169,24 @@
               "RelativeToolTip": "TuningPro.Api\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-10-11T05:21:27.786Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-11T05:21:27.786Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "Services.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Business\\Services\\Services.cs",
               "RelativeDocumentMoniker": "TuningPro.Business\\Services\\Services.cs",
               "ToolTip": "D:\\TuningPro\\TuningPro.Business\\Services\\Services.cs",
               "RelativeToolTip": "TuningPro.Business\\Services\\Services.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAIcAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAADIAAAAAAAAAAAAmwIoAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-11T05:20:32.029Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "CompatibilidadStrategies.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Business\\Strategies\\CompatibilidadStrategies.cs",
               "RelativeDocumentMoniker": "TuningPro.Business\\Strategies\\CompatibilidadStrategies.cs",
@@ -197,7 +198,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "ConfiguracionTaller.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Business\\Config\\ConfiguracionTaller.cs",
               "RelativeDocumentMoniker": "TuningPro.Business\\Config\\ConfiguracionTaller.cs",
@@ -209,15 +210,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
               "Title": "Repositories.cs",
               "DocumentMoniker": "D:\\TuningPro\\TuningPro.Data\\Repositories\\Repositories.cs",
               "RelativeDocumentMoniker": "TuningPro.Data\\Repositories\\Repositories.cs",
               "ToolTip": "D:\\TuningPro\\TuningPro.Data\\Repositories\\Repositories.cs",
               "RelativeToolTip": "TuningPro.Data\\Repositories\\Repositories.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADIAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADEAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-11T05:17:40.428Z"
+              "WhenOpened": "2026-10-11T05:17:40.428Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -253,7 +255,8 @@
               "RelativeToolTip": "TuningPro.Data\\TuningPro.Data.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-10-11T05:03:58.944Z"
+              "WhenOpened": "2026-10-11T05:03:58.944Z",
+              "EditorCaption": ""
             }
           ]
         }

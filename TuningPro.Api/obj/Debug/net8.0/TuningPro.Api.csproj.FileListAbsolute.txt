@@ -286,3 +286,4 @@ D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\refint\TuningPro.Api.dll
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.pdb
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.genruntimeconfig.cache
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\ref\TuningPro.Api.dll
+D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.sourcelink.json

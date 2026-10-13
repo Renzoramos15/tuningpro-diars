@@ -28,3 +28,4 @@ D:\TuningPro\TuningPro.Business\obj\Debug\net8.0\TuningPro.Business.dll
 D:\TuningPro\TuningPro.Business\obj\Debug\net8.0\refint\TuningPro.Business.dll
 D:\TuningPro\TuningPro.Business\obj\Debug\net8.0\TuningPro.Business.pdb
 D:\TuningPro\TuningPro.Business\obj\Debug\net8.0\ref\TuningPro.Business.dll
+D:\TuningPro\TuningPro.Business\obj\Debug\net8.0\TuningPro.Business.sourcelink.json

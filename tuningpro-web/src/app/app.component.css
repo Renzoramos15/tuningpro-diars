@@ -1,0 +1,33 @@
+:host { display: block; font-family: Arial, sans-serif; padding: 16px; max-width: 1100px; margin: 0 auto; }
+h1 { margin-bottom: 8px; }
+section { margin-top: 24px; }
+h2 { margin-bottom: 8px; font-size: 1.2rem; }
+
+.aviso { padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-weight: bold; }
+.aviso.ok { background: #e6f7ec; color: #14683a; border: 1px solid #9fd8b4; }
+.aviso.error { background: #fdeaea; color: #9b1c1c; border: 1px solid #f1aeae; }
+
+.tabla-scroll { overflow-x: auto; margin-top: 10px; }
+table { border-collapse: collapse; width: 100%; }
+th, td { border: 1px solid #bbb; padding: 8px; text-align: left; vertical-align: top; }
+th { background: #f0f0f0; }
+
+tr.stock-bajo td { background: #fff1f1; color: #9b1c1c; }
+.etiqueta { margin-left: 6px; font-size: .75rem; font-weight: bold; }
+
+.fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+input[type="text"] { padding: 6px; min-width: 200px; }
+select, input { padding: 6px; }
+.num { width: 70px; }
+button { padding: 6px 12px; cursor: pointer; }
+.nota { color: #555; margin: 4px 0 8px; }
+
+.estado { padding: 2px 8px; border-radius: 10px; font-size: .85rem; font-weight: bold; background: #eee; }
+.estado[data-estado="Registrado"] { background: #e8eefc; color: #1d3f9b; }
+.estado[data-estado="En proceso"] { background: #fff4d6; color: #8a5a00; }
+.estado[data-estado="Finalizado"] { background: #e6f7ec; color: #14683a; }
+
+@media (max-width: 600px) {
+  :host { padding: 8px; }
+  .fila { flex-direction: column; align-items: stretch; }
+}

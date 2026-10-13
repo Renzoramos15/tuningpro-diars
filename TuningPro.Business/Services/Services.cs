@@ -83,10 +83,14 @@ public interface IProyectoService
     Task<Proyecto> CrearAsync(string nombre, int vehiculoId);
     Task<Proyecto> AsignarPiezaAsync(int proyectoId, int piezaId, int cantidad);
     Task<Proyecto?> ObtenerAsync(int id);
+    Task<List<Proyecto>> ListarAsync();
+    Task<Proyecto> CambiarEstadoAsync(int id, string estado);
 }
 
 public class ProyectoService : IProyectoService
 {
+    private static readonly string[] EstadosValidos = { "Registrado", "En proceso", "Finalizado" };
+
     private readonly IProyectoRepository _proyectos;
     private readonly IRepository<Pieza> _piezas;
     private readonly ICompatibilidadService _compat;
@@ -113,6 +117,9 @@ public class ProyectoService : IProyectoService
         var pieza = await _piezas.GetByIdAsync(piezaId)
                     ?? throw new KeyNotFoundException("Pieza no encontrada.");
 
+        if (proyecto.Estado == "Finalizado")
+            throw new InvalidOperationException("El proyecto está finalizado, no admite más piezas.");
+
         // 1) Validar compatibilidad (Strategy)
         var resultado = await _compat.ValidarAsync(proyecto.VehiculoId, piezaId);
         if (!resultado.EsCompatible) throw new InvalidOperationException(resultado.Mensaje);
@@ -133,4 +140,18 @@ public class ProyectoService : IProyectoService
     }
 
     public Task<Proyecto?> ObtenerAsync(int id) => _proyectos.GetConDetallesAsync(id);
+
+    public Task<List<Proyecto>> ListarAsync() => _proyectos.GetAllConDetallesAsync();
+
+    public async Task<Proyecto> CambiarEstadoAsync(int id, string estado)
+    {
+        if (!EstadosValidos.Contains(estado))
+            throw new InvalidOperationException("Estado no válido.");
+
+        var proyecto = await _proyectos.GetConDetallesAsync(id)
+                       ?? throw new KeyNotFoundException("Proyecto no encontrado.");
+        proyecto.Estado = estado;
+        await _proyectos.SaveAsync();
+        return proyecto;
+    }
 }

@@ -40,6 +40,7 @@ public class CompatibilidadRepository : Repository<Compatibilidad>, ICompatibili
 public interface IProyectoRepository : IRepository<Proyecto>
 {
     Task<Proyecto?> GetConDetallesAsync(int id);
+    Task<List<Proyecto>> GetAllConDetallesAsync();
 }
 
 public class ProyectoRepository : Repository<Proyecto>, IProyectoRepository
@@ -48,4 +49,7 @@ public class ProyectoRepository : Repository<Proyecto>, IProyectoRepository
 
     public Task<Proyecto?> GetConDetallesAsync(int id) =>
         _context.Proyectos.Include(p => p.Detalles).FirstOrDefaultAsync(p => p.Id == id);
+
+    public Task<List<Proyecto>> GetAllConDetallesAsync() =>
+        _context.Proyectos.Include(p => p.Detalles).OrderByDescending(p => p.Id).ToListAsync();
 }
