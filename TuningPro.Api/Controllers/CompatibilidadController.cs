@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TuningPro.Api.Models;
+using TuningPro.Business.Config;
 using TuningPro.Business.Services;
 
 namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RolesTaller.AdminTecnico)]
 public class CompatibilidadController : ControllerBase
 {
     private readonly ICompatibilidadService _service;

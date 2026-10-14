@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TuningPro.Api.Models;
+using TuningPro.Business.Config;
 using TuningPro.Business.Services;
 using TuningPro.Data.Entities;
 using TuningPro.Data.Repositories;
@@ -8,6 +10,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RolesTaller.Personal)]
 public class PiezasController : ControllerBase
 {
     private readonly IRepository<Pieza> _repo;
@@ -22,6 +25,7 @@ public class PiezasController : ControllerBase
     public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
 
     [HttpPost]
+    [Authorize(Roles = RolesTaller.AdminAuxiliar)]
     public async Task<IActionResult> Post(Pieza pieza)
     {
         pieza.Id = 0;
@@ -31,6 +35,7 @@ public class PiezasController : ControllerBase
     }
 
     [HttpPost("{id}/movimiento")]
+    [Authorize(Roles = RolesTaller.AdminAuxiliar)]
     public async Task<IActionResult> Movimiento(int id, MovimientoDto dto)
     {
         try { return Ok(await _inventario.RegistrarMovimientoAsync(id, dto.Cantidad, dto.EsEntrada)); }

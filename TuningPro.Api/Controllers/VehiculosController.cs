@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using TuningPro.Business.Config;
 using TuningPro.Data.Entities;
 using TuningPro.Data.Repositories;
 
@@ -6,6 +8,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RolesTaller.Personal)]
 public class VehiculosController : ControllerBase
 {
     private readonly IRepository<Vehiculo> _repo;
@@ -15,6 +18,7 @@ public class VehiculosController : ControllerBase
     public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
 
     [HttpPost]
+    [Authorize(Roles = RolesTaller.AdminRecepcion)]
     public async Task<IActionResult> Post(Vehiculo vehiculo)
     {
         var existentes = await _repo.GetAllAsync();

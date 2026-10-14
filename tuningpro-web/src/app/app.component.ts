@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Pieza, PiezasService, Proyecto, Vehiculo } from './piezas.service';
+import { AuthService } from './auth.service';
+import { LoginComponent } from './login.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -16,28 +18,47 @@ export class AppComponent implements OnInit {
   proyectos: Proyecto[] = [];
   alertasIds = new Set<number>();
 
-  // Mensaje general
   mensaje = '';
   esError = false;
 
-  // Validar compatibilidad
   vehiculoValidarId = 1;
-
-  // Entradas de stock (por pieza)
   entradas: Record<number, number> = {};
 
-  // Nuevo proyecto
   nuevoNombre = '';
   nuevoVehiculoId = 1;
 
-  // Asignar pieza
   asignacion: { proyectoId: number | null; piezaId: number | null; cantidad: number } = {
     proyectoId: null, piezaId: null, cantidad: 1
   };
 
-  constructor(private service: PiezasService) {}
+  constructor(private service: PiezasService, public auth: AuthService) {}
 
   ngOnInit() {
+    if (this.auth.logueado) this.cargarTodo();
+  }
+
+  // ---------- Permisos para la interfaz ----------
+  get esPersonal(): boolean {
+    return this.auth.puede('Administrador', 'Tecnico', 'Auxiliar', 'Recepcionista');
+  }
+  get puedeValidar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
+  get puedeEntradas(): boolean { return this.auth.puede('Administrador', 'Auxiliar'); }
+  get puedeCrearProyecto(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Recepcionista'); }
+  get puedeAsignar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
+  get puedeFinalizar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
+
+  // ---------- Sesión ----------
+  cerrarSesion() {
+    this.auth.logout();
+    this.vehiculos = []; this.piezas = []; this.proyectos = [];
+    this.alertasIds = new Set();
+    this.mensaje = '';
+  }
+
+  cargarTodo() {
+    this.mensaje = '';
+    if (!this.esPersonal) return;
+
     this.service.getVehiculos().subscribe({
       next: v => {
         this.vehiculos = v;
@@ -172,6 +193,10 @@ export class AppComponent implements OnInit {
   private manejarError(err: any, porDefecto: string) {
     if (err?.status === 0) {
       this.mostrar('No se pudo conectar con la API. ¿Está corriendo?', true);
+    } else if (err?.status === 403) {
+      this.mostrar('Tu rol no tiene permiso para realizar esta acción.', true);
+    } else if (err?.status === 401) {
+      this.mostrar('Tu sesión expiró. Inicia sesión de nuevo.', true);
     } else {
       this.mostrar(err?.error?.mensaje ?? porDefecto, true);
     }

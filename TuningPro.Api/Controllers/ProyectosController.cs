@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TuningPro.Api.Models;
+using TuningPro.Business.Config;
 using TuningPro.Business.Services;
 
 namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = RolesTaller.Personal)]
 public class ProyectosController : ControllerBase
 {
     private readonly IProyectoService _service;
@@ -22,10 +25,12 @@ public class ProyectosController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = RolesTaller.GestionProyectos)]
     public async Task<IActionResult> Crear(CrearProyectoDto dto) =>
         Ok(await _service.CrearAsync(dto.Nombre, dto.VehiculoId));
 
     [HttpPost("{id}/piezas")]
+    [Authorize(Roles = RolesTaller.AdminTecnico)]
     public async Task<IActionResult> AsignarPieza(int id, AsignarPiezaDto dto)
     {
         try { return Ok(await _service.AsignarPiezaAsync(id, dto.PiezaId, dto.Cantidad)); }
@@ -34,6 +39,7 @@ public class ProyectosController : ControllerBase
     }
 
     [HttpPut("{id}/estado")]
+    [Authorize(Roles = RolesTaller.AdminTecnico)]
     public async Task<IActionResult> CambiarEstado(int id, CambiarEstadoDto dto)
     {
         try { return Ok(await _service.CambiarEstadoAsync(id, dto.Estado)); }

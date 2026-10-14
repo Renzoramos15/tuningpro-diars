@@ -53,3 +53,19 @@ public class ProyectoRepository : Repository<Proyecto>, IProyectoRepository
     public Task<List<Proyecto>> GetAllConDetallesAsync() =>
         _context.Proyectos.Include(p => p.Detalles).OrderByDescending(p => p.Id).ToListAsync();
 }
+
+public interface IUsuarioRepository : IRepository<Usuario>
+{
+    Task<Usuario?> GetByNombreUsuarioAsync(string nombreUsuario);
+    Task<bool> HayUsuariosAsync();
+}
+
+public class UsuarioRepository : Repository<Usuario>, IUsuarioRepository
+{
+    public UsuarioRepository(TuningProDbContext context) : base(context) { }
+
+    public Task<Usuario?> GetByNombreUsuarioAsync(string nombreUsuario) =>
+        _context.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario);
+
+    public Task<bool> HayUsuariosAsync() => _context.Usuarios.AnyAsync();
+}

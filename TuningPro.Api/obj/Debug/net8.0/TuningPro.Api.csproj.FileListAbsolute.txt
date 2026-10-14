@@ -287,3 +287,5 @@ D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.pdb
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.genruntimeconfig.cache
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\ref\TuningPro.Api.dll
 D:\TuningPro\TuningPro.Api\obj\Debug\net8.0\TuningPro.Api.sourcelink.json
+D:\TuningPro\TuningPro.Api\bin\Debug\net8.0\BCrypt-Net-Next.dll
+D:\TuningPro\TuningPro.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

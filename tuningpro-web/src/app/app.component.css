@@ -1,33 +1,243 @@
-:host { display: block; font-family: Arial, sans-serif; padding: 16px; max-width: 1100px; margin: 0 auto; }
-h1 { margin-bottom: 8px; }
-section { margin-top: 24px; }
-h2 { margin-bottom: 8px; font-size: 1.2rem; }
+/* ================= GLOBAL & LAYOUT ================= */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  background-color: #f8fafc;
+  color: #1e293b;
+}
 
-.aviso { padding: 10px 14px; border-radius: 6px; margin: 12px 0; font-weight: bold; }
-.aviso.ok { background: #e6f7ec; color: #14683a; border: 1px solid #9fd8b4; }
-.aviso.error { background: #fdeaea; color: #9b1c1c; border: 1px solid #f1aeae; }
+app-root {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
 
-.tabla-scroll { overflow-x: auto; margin-top: 10px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border: 1px solid #bbb; padding: 8px; text-align: left; vertical-align: top; }
-th { background: #f0f0f0; }
+:host { 
+  display: block; 
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+  padding: 24px; 
+  max-width: 1100px; 
+  margin: 0 auto; 
+}
 
-tr.stock-bajo td { background: #fff1f1; color: #9b1c1c; }
-.etiqueta { margin-left: 6px; font-size: .75rem; font-weight: bold; }
+h1 { 
+  margin-bottom: 16px; 
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
 
-.fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-input[type="text"] { padding: 6px; min-width: 200px; }
-select, input { padding: 6px; }
-.num { width: 70px; }
-button { padding: 6px 12px; cursor: pointer; }
-.nota { color: #555; margin: 4px 0 8px; }
+section { 
+  background: #ffffff;
+  margin-top: 24px; 
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
 
-.estado { padding: 2px 8px; border-radius: 10px; font-size: .85rem; font-weight: bold; background: #eee; }
-.estado[data-estado="Registrado"] { background: #e8eefc; color: #1d3f9b; }
-.estado[data-estado="En proceso"] { background: #fff4d6; color: #8a5a00; }
-.estado[data-estado="Finalizado"] { background: #e6f7ec; color: #14683a; }
+h2 { 
+  margin-top: 0;
+  margin-bottom: 12px; 
+  font-size: 1.2rem; 
+  font-weight: 600;
+  color: #1e3a8a;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 8px;
+}
 
+/* ================= AVISOS Y ALERTAS ================= */
+.aviso { 
+  padding: 12px 16px; 
+  border-radius: 10px; 
+  margin: 16px 0; 
+  font-weight: 600; 
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.aviso.ok { 
+  background: #f0fdf4; 
+  color: #15803d; 
+  border: 1px solid #bbf7d0; 
+}
+.aviso.error { 
+  background: #fef2f2; 
+  color: #b91c1c; 
+  border: 1px solid #fecaca; 
+}
+
+/* ================= TABLAS ================= */
+.tabla-scroll { 
+  overflow-x: auto; 
+  margin-top: 14px; 
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+table { 
+  border-collapse: collapse; 
+  width: 100%; 
+  background-color: #ffffff;
+  font-size: 14px;
+}
+
+th, td { 
+  border-bottom: 1px solid #e2e8f0; 
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  padding: 12px 16px; 
+  text-align: left; 
+  vertical-align: middle; 
+}
+
+th { 
+  background: #f8fafc; 
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+tr:hover td {
+  background-color: #f8fafc;
+}
+
+tr.stock-bajo td { 
+  background: #fff5f5 !important; 
+  color: #b91c1c !important; 
+}
+
+.etiqueta { 
+  margin-left: 8px; 
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: .75rem; 
+  font-weight: 700; 
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ================= FORMULARIOS Y CONTROLES ================= */
+.fila { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 12px; 
+  align-items: center; 
+  margin-top: 10px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+  color: #475569;
+}
+
+input[type="text"], select, input { 
+  padding: 10px 12px; 
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background-color: #f8fafc;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+input[type="text"]:focus, select:focus, input:focus {
+  border-color: #2563eb;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.num { 
+  width: 70px; 
+}
+
+button { 
+  padding: 10px 16px; 
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer; 
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #1e40af 0%, #1d4ed8 100%);
+  transform: translateY(-1px);
+}
+
+.nota { 
+  color: #64748b; 
+  font-size: 13px;
+  margin: 6px 0 12px 0; 
+}
+
+/* ================= ESTADOS DE PROYECTOS ================= */
+.estado { 
+  padding: 4px 10px; 
+  border-radius: 20px; 
+  font-size: .75rem; 
+  font-weight: 700; 
+  display: inline-block;
+  text-align: center;
+}
+
+.estado[data-estado="Registrado"] { 
+  background: #e0f2fe; 
+  color: #0369a1; 
+}
+
+.estado[data-estado="En proceso"] { 
+  background: #fef3c7; 
+  color: #b45309; 
+}
+
+.estado[data-estado="Finalizado"] { 
+  background: #dcfce7; 
+  color: #15803d; 
+}
+
+/* ================= RESPONSIVE ================= */
 @media (max-width: 600px) {
   :host { padding: 8px; }
   .fila { flex-direction: column; align-items: stretch; }
+}
+
+/* ================= BARRA SUPERIOR ================= */
+.barra { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center;
+  background: #ffffff; 
+  padding: 14px 20px; 
+  border-radius: 12px; 
+  margin-bottom: 24px; 
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.rol { 
+  margin-left: 8px; 
+  padding: 4px 12px; 
+  border-radius: 20px; 
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #fff; 
+  font-size: .75rem; 
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }

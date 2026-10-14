@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { API_URL } from './api.config';
 
 export interface Vehiculo {
   id: number; placa: string; marca: string; modelo: string; anio: number; clienteNombre: string;
@@ -26,7 +27,7 @@ export interface ResultadoValidacion {
 
 @Injectable({ providedIn: 'root' })
 export class PiezasService {
-  private api = 'http://localhost:5260/api'; // <-- ESTE ES EL PUERTO
+  private api = API_URL;
 
   constructor(private http: HttpClient) {}
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TuningPro.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a9e45fbe32efe79e1a264a6eb819e9333dfcc26c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a99137c0e6161ceb84bec2372eecd48dac2f76c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("TuningPro.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TuningPro.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

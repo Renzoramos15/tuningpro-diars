@@ -1,5 +1,31 @@
 [
   {
+    "ContainingType": "TuningPro.Api.Controllers.AuthController",
+    "Method": "Login",
+    "RelativePath": "api/Auth/login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.LoginDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.AuthController",
+    "Method": "Perfil",
+    "RelativePath": "api/Auth/perfil",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TuningPro.Api.Controllers.CompatibilidadController",
     "Method": "Registrar",
     "RelativePath": "api/Compatibilidad",

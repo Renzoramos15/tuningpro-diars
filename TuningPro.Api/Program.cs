@@ -1,5 +1,10 @@
+using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using TuningPro.Api.Security;
 using TuningPro.Business.Config;
 using TuningPro.Business.Services;
 using TuningPro.Business.Strategies;
@@ -11,19 +16,66 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+// Swagger con botón "Authorize" para probar con token
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Pega solo el token JWT (sin la palabra Bearer)"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
+
 builder.Services.AddCors(o => o.AddPolicy("Angular",
     p => p.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod()));
 
-// Capa de datos
+// ---------- Autenticación JWT ----------
+var jwt = builder.Configuration.GetSection("Jwt");
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(o =>
+    {
+        o.MapInboundClaims = false;
+        o.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt["Issuer"],
+            ValidAudience = jwt["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt["Key"]!)),
+            RoleClaimType = "role",
+            NameClaimType = "unique_name",
+            ClockSkew = TimeSpan.Zero
+        };
+    });
+builder.Services.AddAuthorization();
+
+// ---------- Capa de datos ----------
 builder.Services.AddDbContext<TuningProDbContext>(o =>
     o.UseSqlServer(builder.Configuration.GetConnectionString("TuningProDb"),
         sql => sql.MigrationsAssembly("TuningPro.Data")));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));      // Repository
 builder.Services.AddScoped<ICompatibilidadRepository, CompatibilidadRepository>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
-// Capa de negocio
+// ---------- Capa de negocio ----------
 builder.Services.AddScoped<ICompatibilidadStrategy, FrenosStrategy>();         // Strategy
 builder.Services.AddScoped<ICompatibilidadStrategy, SuspensionStrategy>();
 builder.Services.AddScoped<ICompatibilidadStrategy, TurboStrategy>();
@@ -32,11 +84,22 @@ builder.Services.AddSingleton<ConfiguracionTaller>();                          /
 builder.Services.AddScoped<ICompatibilidadService, CompatibilidadService>();
 builder.Services.AddScoped<IInventarioService, InventarioService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<ITokenGenerator, JwtTokenGenerator>();
 
 var app = builder.Build();
+
+// Crea los usuarios de demostración si la tabla está vacía
+using (var scope = app.Services.CreateScope())
+{
+    var auth = scope.ServiceProvider.GetRequiredService<IAuthService>();
+    await auth.SembrarUsuariosAsync();
+}
 
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("Angular");
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

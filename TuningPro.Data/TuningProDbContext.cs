@@ -13,6 +13,7 @@ public class TuningProDbContext : DbContext
     public DbSet<Compatibilidad> Compatibilidades => Set<Compatibilidad>();
     public DbSet<Proyecto> Proyectos => Set<Proyecto>();
     public DbSet<DetalleProyecto> DetallesProyecto => Set<DetalleProyecto>();
+    public DbSet<Usuario> Usuarios => Set<Usuario>();
 
     protected override void OnModelCreating(ModelBuilder mb)
     {
@@ -26,6 +27,7 @@ public class TuningProDbContext : DbContext
         mb.Entity<Compatibilidad>().HasIndex(c => new { c.VehiculoId, c.PiezaId }).IsUnique();
         mb.Entity<Proyecto>().HasOne<Vehiculo>().WithMany().HasForeignKey(p => p.VehiculoId);
         mb.Entity<DetalleProyecto>().HasOne<Pieza>().WithMany().HasForeignKey(d => d.PiezaId);
+        mb.Entity<Usuario>().HasIndex(u => u.NombreUsuario).IsUnique();
 
         // Datos de ejemplo para la demo
         mb.Entity<Proveedor>().HasData(
