@@ -41,6 +41,7 @@ public interface IProyectoRepository : IRepository<Proyecto>
 {
     Task<Proyecto?> GetConDetallesAsync(int id);
     Task<List<Proyecto>> GetAllConDetallesAsync();
+    Task<List<Proyecto>> GetByVehiculosAsync(List<int> vehiculoIds);
 }
 
 public class ProyectoRepository : Repository<Proyecto>, IProyectoRepository
@@ -52,6 +53,25 @@ public class ProyectoRepository : Repository<Proyecto>, IProyectoRepository
 
     public Task<List<Proyecto>> GetAllConDetallesAsync() =>
         _context.Proyectos.Include(p => p.Detalles).OrderByDescending(p => p.Id).ToListAsync();
+
+    public Task<List<Proyecto>> GetByVehiculosAsync(List<int> vehiculoIds) =>
+        _context.Proyectos.Include(p => p.Detalles)
+            .Where(p => vehiculoIds.Contains(p.VehiculoId))
+            .OrderByDescending(p => p.Id)
+            .ToListAsync();
+}
+
+public interface IVehiculoRepository : IRepository<Vehiculo>
+{
+    Task<List<Vehiculo>> GetByUsuarioAsync(int usuarioId);
+}
+
+public class VehiculoRepository : Repository<Vehiculo>, IVehiculoRepository
+{
+    public VehiculoRepository(TuningProDbContext context) : base(context) { }
+
+    public Task<List<Vehiculo>> GetByUsuarioAsync(int usuarioId) =>
+        _context.Vehiculos.Where(v => v.UsuarioId == usuarioId).ToListAsync();
 }
 
 public interface IUsuarioRepository : IRepository<Usuario>

@@ -74,6 +74,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));      //
 builder.Services.AddScoped<ICompatibilidadRepository, CompatibilidadRepository>();
 builder.Services.AddScoped<IProyectoRepository, ProyectoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
 
 // ---------- Capa de negocio ----------
 builder.Services.AddScoped<ICompatibilidadStrategy, FrenosStrategy>();         // Strategy
@@ -86,6 +87,7 @@ builder.Services.AddScoped<IInventarioService, InventarioService>();
 builder.Services.AddScoped<IProyectoService, ProyectoService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<ITokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IPortalService, PortalService>();
 
 var app = builder.Build();
 

@@ -28,6 +28,7 @@ public class TuningProDbContext : DbContext
         mb.Entity<Proyecto>().HasOne<Vehiculo>().WithMany().HasForeignKey(p => p.VehiculoId);
         mb.Entity<DetalleProyecto>().HasOne<Pieza>().WithMany().HasForeignKey(d => d.PiezaId);
         mb.Entity<Usuario>().HasIndex(u => u.NombreUsuario).IsUnique();
+        mb.Entity<Vehiculo>().HasOne<Usuario>().WithMany().HasForeignKey(v => v.UsuarioId);
 
         // Datos de ejemplo para la demo
         mb.Entity<Proveedor>().HasData(

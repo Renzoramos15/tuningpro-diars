@@ -204,6 +204,18 @@
         }
       }
     },
+    "/api/Portal/mis-proyectos": {
+      "get": {
+        "tags": [
+          "Portal"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Proyectos": {
       "get": {
         "tags": [
@@ -538,6 +550,11 @@
           },
           "clienteNombre": {
             "type": "string",
+            "nullable": true
+          },
+          "usuarioId": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           }
         },

@@ -18,10 +18,8 @@
     {{ esError ? '❌' : '✅' }} {{ mensaje }}
   </div>
 
-  <!-- Rol Cliente: aún sin portal -->
-  <div *ngIf="!esPersonal" class="aviso error">
-    🔒 Tu rol (Cliente) no tiene acceso al panel del taller. El portal de consulta de proyectos estará disponible en la siguiente versión.
-  </div>
+  <!-- Rol Cliente: portal de consulta -->
+  <app-portal *ngIf="auth.puede('Cliente')"></app-portal>
 
   <ng-container *ngIf="esPersonal">
 

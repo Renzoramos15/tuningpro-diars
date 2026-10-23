@@ -120,6 +120,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TuningPro.Api.Controllers.PortalController",
+    "Method": "MisProyectos",
+    "RelativePath": "api/Portal/mis-proyectos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TuningPro.Api.Controllers.ProyectosController",
     "Method": "Listar",
     "RelativePath": "api/Proyectos",

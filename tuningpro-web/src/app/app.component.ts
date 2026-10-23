@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { Pieza, PiezasService, Proyecto, Vehiculo } from './piezas.service';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './login.component';
+import { PortalComponent } from './portal.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoginComponent],
+imports: [CommonModule, FormsModule, LoginComponent, PortalComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

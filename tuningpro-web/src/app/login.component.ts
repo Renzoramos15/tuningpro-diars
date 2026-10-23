@@ -11,7 +11,7 @@ import { AuthService } from './auth.service';
     <div class="login-container">
       <div class="login-card">
         <div class="login-header">
-          <div class="logo-icon">🚗</div>
+          <div class="logo-icon"></div>
           <h1>TuningPro</h1>
           <p class="sub">Inicia sesión para continuar</p>
         </div>

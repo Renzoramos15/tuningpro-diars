@@ -39,11 +39,9 @@ public class AuthService : IAuthService
         return new LoginResultado(token, u.NombreUsuario, u.NombreCompleto, u.Rol, expira);
     }
 
-    // Crea los usuarios de demostración solo si la tabla está vacía
+    // Crea los usuarios de demostración que aún no existan
     public async Task SembrarUsuariosAsync()
     {
-        if (await _usuarios.HayUsuariosAsync()) return;
-
         var iniciales = new[]
         {
             (Usuario: "admin",     Nombre: "Administrador del Taller", Clave: "Admin123*",     Rol: RolesTaller.Administrador),
@@ -51,10 +49,14 @@ public class AuthService : IAuthService
             (Usuario: "auxiliar",  Nombre: "Ana Inventario",           Clave: "Auxiliar123*",  Rol: RolesTaller.Auxiliar),
             (Usuario: "recepcion", Nombre: "Rosa Recepción",           Clave: "Recepcion123*", Rol: RolesTaller.Recepcionista),
             (Usuario: "cliente",   Nombre: "Juan Pérez (Cliente)",     Clave: "Cliente123*",   Rol: RolesTaller.Cliente),
+            (Usuario: "maria",     Nombre: "María Torres (Cliente)",   Clave: "Maria123*",     Rol: RolesTaller.Cliente),
         };
 
+        var hayCambios = false;
         foreach (var i in iniciales)
         {
+            if (await _usuarios.GetByNombreUsuarioAsync(i.Usuario) is not null) continue;
+
             await _usuarios.AddAsync(new Usuario
             {
                 NombreUsuario = i.Usuario,
@@ -63,7 +65,9 @@ public class AuthService : IAuthService
                 Rol = i.Rol,
                 Activo = true
             });
+            hayCambios = true;
         }
-        await _usuarios.SaveAsync();
+
+        if (hayCambios) await _usuarios.SaveAsync();
     }
 }
