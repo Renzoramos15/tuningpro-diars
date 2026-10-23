@@ -2,5 +2,4 @@
   <Project Path="TuningPro.Api/TuningPro.Api.csproj" />
   <Project Path="TuningPro.Business/TuningPro.Business.csproj" />
   <Project Path="TuningPro.Data/TuningPro.Data.csproj" />
-  <Project Path="tuningpro-web/tuningpro-web.csproj" />
 </Solution>
