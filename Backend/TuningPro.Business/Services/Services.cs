@@ -10,6 +10,8 @@ public interface ICompatibilidadService
 {
     Task<ResultadoValidacion> ValidarAsync(int vehiculoId, int piezaId);
     Task RegistrarAsync(int vehiculoId, int piezaId);
+    Task<List<Pieza>> ListarPorVehiculoAsync(int vehiculoId);
+    Task EliminarAsync(int vehiculoId, int piezaId);
 }
 
 public class CompatibilidadService : ICompatibilidadService
@@ -18,7 +20,6 @@ public class CompatibilidadService : ICompatibilidadService
     private readonly IRepository<Vehiculo> _vehiculos;
     private readonly IRepository<Pieza> _piezas;
     private readonly ICompatibilidadRepository _compat;
-
 
     public CompatibilidadService(IEnumerable<ICompatibilidadStrategy> strategies,
         IRepository<Vehiculo> vehiculos, IRepository<Pieza> piezas, ICompatibilidadRepository compat)
@@ -36,11 +37,39 @@ public class CompatibilidadService : ICompatibilidadService
         return await strategy.ValidarAsync(v, p);
     }
 
+    // RF06: registrar compatibilidad vehículo-pieza
     public async Task RegistrarAsync(int vehiculoId, int piezaId)
     {
+        if (await _vehiculos.GetByIdAsync(vehiculoId) is null)
+            throw new KeyNotFoundException("Vehículo no encontrado.");
+        if (await _piezas.GetByIdAsync(piezaId) is null)
+            throw new KeyNotFoundException("Pieza no encontrada.");
         if (await _compat.ExisteAsync(vehiculoId, piezaId))
             throw new InvalidOperationException("La compatibilidad ya está registrada.");
+
         await _compat.AddAsync(new Compatibilidad { VehiculoId = vehiculoId, PiezaId = piezaId });
+        await _compat.SaveAsync();
+    }
+
+    public async Task<List<Pieza>> ListarPorVehiculoAsync(int vehiculoId)
+    {
+        if (await _vehiculos.GetByIdAsync(vehiculoId) is null)
+            throw new KeyNotFoundException("Vehículo no encontrado.");
+
+        var relaciones = await _compat.GetByVehiculoAsync(vehiculoId);
+        var ids = relaciones.Select(c => c.PiezaId).ToHashSet();
+
+        return (await _piezas.GetAllAsync())
+            .Where(p => ids.Contains(p.Id))
+            .OrderBy(p => p.Categoria).ThenBy(p => p.Nombre)
+            .ToList();
+    }
+
+    public async Task EliminarAsync(int vehiculoId, int piezaId)
+    {
+        var relacion = await _compat.GetAsync(vehiculoId, piezaId)
+                       ?? throw new KeyNotFoundException("La compatibilidad no existe.");
+        _compat.Remove(relacion);
         await _compat.SaveAsync();
     }
 }

@@ -6,11 +6,12 @@ import { AuthService } from './auth.service';
 import { LoginComponent } from './login.component';
 import { PortalComponent } from './portal.component';
 import { OrdenesComponent } from './ordenes.component';
+import { GestionComponent } from './gestion.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent],
+imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent, GestionComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -99,6 +100,10 @@ export class AppComponent implements OnInit {
       },
       error: e => this.manejarError(e, 'No se pudieron cargar los proyectos.')
     });
+  }
+  recargarMaestros() {
+    this.service.getVehiculos().subscribe({ next: v => (this.vehiculos = v) });
+    this.recargarInventario();
   }
 
   // ---------- Compatibilidad ----------

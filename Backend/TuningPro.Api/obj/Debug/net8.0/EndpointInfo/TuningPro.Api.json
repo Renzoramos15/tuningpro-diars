@@ -48,8 +48,57 @@
         }
       }
     },
-    "/api/Compatibilidad/validar": {
+    "/api/Compatibilidad": {
       "get": {
+        "tags": [
+          "Compatibilidad"
+        ],
+        "parameters": [
+          {
+            "name": "vehiculoId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Compatibilidad"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompatibilidadDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompatibilidadDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompatibilidadDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "delete": {
         "tags": [
           "Compatibilidad"
         ],
@@ -78,30 +127,29 @@
         }
       }
     },
-    "/api/Compatibilidad": {
-      "post": {
+    "/api/Compatibilidad/validar": {
+      "get": {
         "tags": [
           "Compatibilidad"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompatibilidadDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompatibilidadDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CompatibilidadDto"
-              }
+        "parameters": [
+          {
+            "name": "vehiculoId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "piezaId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -169,17 +217,59 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pieza"
+                "$ref": "#/components/schemas/PiezaDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Pieza"
+                "$ref": "#/components/schemas/PiezaDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Pieza"
+                "$ref": "#/components/schemas/PiezaDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Piezas/{id}": {
+      "put": {
+        "tags": [
+          "Piezas"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PiezaDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PiezaDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/PiezaDto"
               }
             }
           }
@@ -250,6 +340,89 @@
         "tags": [
           "Portal"
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Proveedores": {
+      "get": {
+        "tags": [
+          "Proveedores"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Proveedores"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Proveedores/{id}": {
+      "put": {
+        "tags": [
+          "Proveedores"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProveedorDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "OK"
@@ -410,6 +583,15 @@
         "tags": [
           "Vehiculos"
         ],
+        "parameters": [
+          {
+            "name": "buscar",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -424,17 +606,71 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Vehiculo"
+                "$ref": "#/components/schemas/VehiculoDto"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Vehiculo"
+                "$ref": "#/components/schemas/VehiculoDto"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Vehiculo"
+                "$ref": "#/components/schemas/VehiculoDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehiculos/clientes": {
+      "get": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/Vehiculos/{id}": {
+      "put": {
+        "tags": [
+          "Vehiculos"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehiculoDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehiculoDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehiculoDto"
               }
             }
           }
@@ -546,13 +782,9 @@
         },
         "additionalProperties": false
       },
-      "Pieza": {
+      "PiezaDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
           "codigo": {
             "type": "string",
             "nullable": true
@@ -584,13 +816,23 @@
         },
         "additionalProperties": false
       },
-      "Vehiculo": {
+      "ProveedorDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
+          "nombre": {
+            "type": "string",
+            "nullable": true
           },
+          "contacto": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "VehiculoDto": {
+        "type": "object",
+        "properties": {
           "placa": {
             "type": "string",
             "nullable": true

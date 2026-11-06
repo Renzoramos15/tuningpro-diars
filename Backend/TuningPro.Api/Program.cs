@@ -90,6 +90,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddSingleton<ITokenGenerator, JwtTokenGenerator>();
 builder.Services.AddScoped<IPortalService, PortalService>();
 builder.Services.AddScoped<IOrdenTrabajoService, OrdenTrabajoService>();
+builder.Services.AddScoped<IVehiculoService, VehiculoService>();
+builder.Services.AddScoped<IProveedorService, ProveedorService>();
+builder.Services.AddScoped<IPiezaService, PiezaService>();
 
 var app = builder.Build();
 

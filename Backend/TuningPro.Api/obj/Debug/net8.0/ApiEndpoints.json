@@ -27,6 +27,22 @@
   },
   {
     "ContainingType": "TuningPro.Api.Controllers.CompatibilidadController",
+    "Method": "Listar",
+    "RelativePath": "api/Compatibilidad",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehiculoId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.CompatibilidadController",
     "Method": "Registrar",
     "RelativePath": "api/Compatibilidad",
     "HttpMethod": "POST",
@@ -37,6 +53,27 @@
         "Name": "dto",
         "Type": "TuningPro.Api.Models.CompatibilidadDto",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.CompatibilidadController",
+    "Method": "Eliminar",
+    "RelativePath": "api/Compatibilidad",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehiculoId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "piezaId",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -100,15 +137,36 @@
   },
   {
     "ContainingType": "TuningPro.Api.Controllers.PiezasController",
-    "Method": "Post",
+    "Method": "Crear",
     "RelativePath": "api/Piezas",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "pieza",
-        "Type": "TuningPro.Data.Entities.Pieza",
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.PiezaDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.PiezasController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Piezas/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.PiezaDto",
         "IsRequired": true
       }
     ],
@@ -153,6 +211,53 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ProveedoresController",
+    "Method": "Get",
+    "RelativePath": "api/Proveedores",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ProveedoresController",
+    "Method": "Crear",
+    "RelativePath": "api/Proveedores",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.ProveedorDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ProveedoresController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Proveedores/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.ProveedorDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {
@@ -246,23 +351,60 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "buscar",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "TuningPro.Api.Controllers.VehiculosController",
-    "Method": "Post",
+    "Method": "Crear",
     "RelativePath": "api/Vehiculos",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "vehiculo",
-        "Type": "TuningPro.Data.Entities.Vehiculo",
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.VehiculoDto",
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.VehiculosController",
+    "Method": "Actualizar",
+    "RelativePath": "api/Vehiculos/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "TuningPro.Api.Models.VehiculoDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.VehiculosController",
+    "Method": "Clientes",
+    "RelativePath": "api/Vehiculos/clientes",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

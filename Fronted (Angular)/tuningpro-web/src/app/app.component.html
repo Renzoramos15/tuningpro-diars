@@ -134,6 +134,10 @@
 
         <!-- ================= ÓRDENES DE TRABAJO ================= -->
     <app-ordenes *ngIf="puedeOrdenes"></app-ordenes>
+        <app-ordenes *ngIf="puedeOrdenes"></app-ordenes>
+
+    <app-gestion (cambio)="recargarMaestros()"></app-gestion>
+
 
   </ng-container>
 </ng-container>

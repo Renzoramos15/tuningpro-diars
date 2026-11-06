@@ -25,3 +25,17 @@ D:\TuningPro\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.pdb
 D:\TuningPro\TuningPro.Data\obj\Debug\net8.0\ref\TuningPro.Data.dll
 D:\TuningPro\TuningPro.Data\obj\Debug\net8.0\TuningPr.F9B39DFB.Up2Date
 D:\TuningPro\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.sourcelink.json
+D:\TuningPro\Backend\TuningPro.Data\bin\Debug\net8.0\TuningPro.Data.deps.json
+D:\TuningPro\Backend\TuningPro.Data\bin\Debug\net8.0\TuningPro.Data.dll
+D:\TuningPro\Backend\TuningPro.Data\bin\Debug\net8.0\TuningPro.Data.pdb
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.csproj.AssemblyReference.cache
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.AssemblyInfoInputs.cache
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.AssemblyInfo.cs
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.csproj.CoreCompileInputs.cache
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.sourcelink.json
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.dll
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\refint\TuningPro.Data.dll
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPro.Data.pdb
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\ref\TuningPro.Data.dll
+D:\TuningPro\Backend\TuningPro.Data\obj\Debug\net8.0\TuningPr.F9B39DFB.Up2Date

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TuningPro.Api.Models;
 using TuningPro.Business.Config;
+using TuningPro.Business.Services;
 using TuningPro.Data.Entities;
-using TuningPro.Data.Repositories;
 
 namespace TuningPro.Api.Controllers;
 
@@ -11,23 +12,46 @@ namespace TuningPro.Api.Controllers;
 [Authorize(Roles = RolesTaller.Personal)]
 public class VehiculosController : ControllerBase
 {
-    private readonly IRepository<Vehiculo> _repo;
-    public VehiculosController(IRepository<Vehiculo> repo) => _repo = repo;
+    private readonly IVehiculoService _service;
+    public VehiculosController(IVehiculoService service) => _service = service;
 
     [HttpGet]
-    public async Task<IActionResult> Get() => Ok(await _repo.GetAllAsync());
+    public async Task<IActionResult> Get([FromQuery] string? buscar) =>
+        Ok(await _service.ListarAsync(buscar));
+
+    // Cuentas de cliente para vincular un vehículo con el portal
+    [HttpGet("clientes")]
+    [Authorize(Roles = RolesTaller.AdminRecepcion)]
+    public async Task<IActionResult> Clientes() => Ok(await _service.ListarClientesAsync());
 
     [HttpPost]
     [Authorize(Roles = RolesTaller.AdminRecepcion)]
-    public async Task<IActionResult> Post(Vehiculo vehiculo)
+    public async Task<IActionResult> Crear(VehiculoDto dto)
     {
-        var existentes = await _repo.GetAllAsync();
-        if (existentes.Any(v => v.Placa == vehiculo.Placa))
-            return Conflict(new { mensaje = "Ya existe un vehículo con esa placa." });
-
-        vehiculo.Id = 0;
-        await _repo.AddAsync(vehiculo);
-        await _repo.SaveAsync();
-        return Created($"api/vehiculos/{vehiculo.Id}", vehiculo);
+        try
+        {
+            var vehiculo = await _service.CrearAsync(Mapear(dto));
+            return Created($"api/vehiculos/{vehiculo.Id}", vehiculo);
+        }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
     }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = RolesTaller.AdminRecepcion)]
+    public async Task<IActionResult> Actualizar(int id, VehiculoDto dto)
+    {
+        try { return Ok(await _service.ActualizarAsync(id, Mapear(dto))); }
+        catch (KeyNotFoundException ex) { return NotFound(new { mensaje = ex.Message }); }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
+    }
+
+    private static Vehiculo Mapear(VehiculoDto d) => new()
+    {
+        Placa = d.Placa ?? string.Empty,
+        Marca = d.Marca ?? string.Empty,
+        Modelo = d.Modelo ?? string.Empty,
+        Anio = d.Anio,
+        ClienteNombre = d.ClienteNombre ?? string.Empty,
+        UsuarioId = d.UsuarioId
+    };
 }

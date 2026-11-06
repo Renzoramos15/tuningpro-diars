@@ -13,3 +13,31 @@ app-root {
   width: 100%;
   min-height: 100vh;
 }
+/* ===== Sección Gestión de datos ===== */
+.gestion { margin-top: 28px; font-family: Arial, sans-serif; }
+.gestion h3 { margin: 14px 0 8px; font-size: 1.05rem; }
+.gestion h4 { margin: 14px 0 6px; font-size: .98rem; }
+.gestion .nota { color: #555; margin: 4px 0; font-size: .9rem; }
+
+.gestion .tabs { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 2px solid #ddd; margin: 10px 0; }
+.gestion .tab { padding: 8px 16px; border: 1px solid #ccc; border-bottom: none; border-radius: 6px 6px 0 0;
+                background: #f0f0f0; cursor: pointer; font-weight: bold; }
+.gestion .tab.activa { background: #1d3f9b; color: #fff; border-color: #1d3f9b; }
+
+.gestion .formulario { background: #fafafa; border: 1px solid #ddd; border-radius: 6px; padding: 12px; margin: 10px 0; }
+.gestion .fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; margin-top: 8px; }
+.gestion label { display: flex; flex-direction: column; gap: 2px; font-size: .85rem; font-weight: bold; }
+.gestion input, .gestion select { padding: 6px; font-weight: normal; }
+.gestion .num { width: 100px; }
+.gestion button { padding: 6px 12px; cursor: pointer; }
+
+.gestion .aviso { padding: 10px 14px; border-radius: 6px; margin: 10px 0; font-weight: bold; }
+.gestion .aviso.ok { background: #e6f7ec; color: #14683a; border: 1px solid #9fd8b4; }
+.gestion .aviso.error { background: #fdeaea; color: #9b1c1c; border: 1px solid #f1aeae; }
+
+.gestion .tabla-scroll { overflow-x: auto; margin-top: 10px; }
+.gestion table { border-collapse: collapse; width: 100%; }
+.gestion th, .gestion td { border: 1px solid #bbb; padding: 8px; text-align: left; vertical-align: top; }
+.gestion th { background: #f0f0f0; }
+.gestion .etiqueta { padding: 2px 8px; border-radius: 10px; font-size: .8rem; font-weight: bold; background: #e8eefc; color: #1d3f9b; }
+.gestion .sin-cuenta { color: #888; font-style: italic; }

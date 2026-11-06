@@ -2666,11 +2666,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\TuningPro\\TuningPro.Data\\TuningPro.Data.csproj",
+      "projectUniqueName": "D:\\TuningPro\\Backend\\TuningPro.Data\\TuningPro.Data.csproj",
       "projectName": "TuningPro.Data",
-      "projectPath": "D:\\TuningPro\\TuningPro.Data\\TuningPro.Data.csproj",
+      "projectPath": "D:\\TuningPro\\Backend\\TuningPro.Data\\TuningPro.Data.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\TuningPro\\TuningPro.Data\\obj\\",
+      "outputPath": "D:\\TuningPro\\Backend\\TuningPro.Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

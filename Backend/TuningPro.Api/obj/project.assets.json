@@ -68,7 +68,7 @@
           }
         }
       },
-      "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.32": {
+      "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.33": {
         "type": "package",
         "dependencies": {
           "Microsoft.IdentityModel.Protocols.OpenIdConnect": "7.7.3"
@@ -1635,10 +1635,10 @@
         "logo.png"
       ]
     },
-    "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.32": {
-      "sha512": "BrL4xE4byyDVL9+gfhK48aK2MwsFSDV5/OwLn2jc6lkb5aYiAAO69ueK23Q9+G+qQm8HNagzt6o+3MHremFSFg==",
+    "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.33": {
+      "sha512": "Hwq3HqpQD3Y3wLI0TX8o+KYDxbyYR7w5pUKx+Va2MtfgQ9rwh3RzH/dtiwPkmUPfTaT7a5771pmL9X1kqfWD5g==",
       "type": "package",
-      "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.32",
+      "path": "microsoft.aspnetcore.authentication.jwtbearer/8.0.33",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1646,7 +1646,7 @@
         "THIRD-PARTY-NOTICES.TXT",
         "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll",
         "lib/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.xml",
-        "microsoft.aspnetcore.authentication.jwtbearer.8.0.32.nupkg.sha512",
+        "microsoft.aspnetcore.authentication.jwtbearer.8.0.33.nupkg.sha512",
         "microsoft.aspnetcore.authentication.jwtbearer.nuspec"
       ]
     },
@@ -4226,11 +4226,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\TuningPro\\TuningPro.Api\\TuningPro.Api.csproj",
+      "projectUniqueName": "D:\\TuningPro\\Backend\\TuningPro.Api\\TuningPro.Api.csproj",
       "projectName": "TuningPro.Api",
-      "projectPath": "D:\\TuningPro\\TuningPro.Api\\TuningPro.Api.csproj",
+      "projectPath": "D:\\TuningPro\\Backend\\TuningPro.Api\\TuningPro.Api.csproj",
       "packagesPath": "C:\\Users\\LENOVO\\.nuget\\packages\\",
-      "outputPath": "D:\\TuningPro\\TuningPro.Api\\obj\\",
+      "outputPath": "D:\\TuningPro\\Backend\\TuningPro.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4252,11 +4252,11 @@
           "framework": "net8.0",
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\TuningPro\\TuningPro.Business\\TuningPro.Business.csproj": {
-              "projectPath": "D:\\TuningPro\\TuningPro.Business\\TuningPro.Business.csproj"
+            "D:\\TuningPro\\Backend\\TuningPro.Business\\TuningPro.Business.csproj": {
+              "projectPath": "D:\\TuningPro\\Backend\\TuningPro.Business\\TuningPro.Business.csproj"
             },
-            "D:\\TuningPro\\TuningPro.Data\\TuningPro.Data.csproj": {
-              "projectPath": "D:\\TuningPro\\TuningPro.Data\\TuningPro.Data.csproj"
+            "D:\\TuningPro\\Backend\\TuningPro.Data\\TuningPro.Data.csproj": {
+              "projectPath": "D:\\TuningPro\\Backend\\TuningPro.Data\\TuningPro.Data.csproj"
             }
           }
         }

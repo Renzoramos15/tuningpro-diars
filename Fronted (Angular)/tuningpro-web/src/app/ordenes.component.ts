@@ -23,88 +23,185 @@ interface VehiculoLite { id: number; placa: string; marca: string; modelo: strin
   imports: [CommonModule, FormsModule],
   template: `
     <section>
-      <div class="encabezado">
-        <h2>Órdenes de trabajo</h2>
-        <button (click)="cargar()" [disabled]="cargando">{{ cargando ? 'Actualizando...' : '↻ Actualizar' }}</button>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h2 style="margin: 0; border: none; padding: 0;">Órdenes de trabajo</h2>
+        <button class="btn-azul" (click)="cargar()" [disabled]="cargando">
+          {{ cargando ? 'Actualizando...' : '↻ Actualizar' }}
+        </button>
       </div>
 
       <div *ngIf="mensaje" class="aviso" [class.error]="esError" [class.ok]="!esError">
         {{ esError ? '❌' : '✅' }} {{ mensaje }}
       </div>
 
-      <!-- Generar -->
-      <h3>Generar orden</h3>
-      <p class="nota" *ngIf="pendientes.length === 0">
-        No hay proyectos pendientes de orden. Un proyecto necesita al menos una pieza asignada.
-      </p>
+      <!-- Formulario Generar Orden -->
+      <div style="background: #f8fafc; padding: 22px; border-radius: 12px; border: 1.5px solid #e2e8f0; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; margin-bottom: 14px; font-size: 15px; font-weight: 600; color: #1e3a8a;">Generar nueva orden</h3>
+        
+        <p class="nota" *ngIf="pendientes.length === 0" style="margin-bottom: 12px;">
+          No hay proyectos pendientes de orden. Un proyecto necesita al menos una pieza asignada.
+        </p>
 
-      <div class="fila" *ngIf="pendientes.length > 0">
-        <select [(ngModel)]="proyectoId">
-          <option [ngValue]="null" disabled>Proyecto...</option>
-          <option *ngFor="let p of pendientes" [ngValue]="p.id">
-            N° {{ p.id }} - {{ p.nombre }} (piezas S/ {{ totalPiezas(p) | number:'1.2-2' }})
-          </option>
-        </select>
-        <label>Mano de obra (S/)
-          <input type="number" min="0" step="0.01" [(ngModel)]="manoObra" class="num" />
-        </label>
-        <input type="text" placeholder="Observaciones (opcional)" [(ngModel)]="observaciones" class="texto" />
-        <button (click)="generar()">Generar orden</button>
+        <div class="fila" *ngIf="pendientes.length > 0">
+          <label style="flex: 3; min-width: 260px;">
+            Proyecto
+            <select [(ngModel)]="proyectoId" class="input-amplio">
+              <option [ngValue]="null" disabled>Proyecto...</option>
+              <option *ngFor="let p of pendientes" [ngValue]="p.id">
+                N° {{ p.id }} - {{ p.nombre }} (piezas S/ {{ totalPiezas(p) | number:'1.2-2' }})
+              </option>
+            </select>
+          </label>
+
+          <label style="flex: 1.5; min-width: 160px;">
+            Mano de obra (S/)
+            <input type="number" min="0" step="0.01" [(ngModel)]="manoObra" class="input-amplio" />
+          </label>
+
+          <label style="flex: 3; min-width: 260px;">
+            Observaciones
+            <input type="text" placeholder="Observaciones (opcional)" [(ngModel)]="observaciones" class="input-amplio" />
+          </label>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 18px; padding-top: 14px; border-top: 1px solid #e2e8f0; flex-wrap: wrap; gap: 12px;" *ngIf="seleccionado">
+          <div style="font-size: 13px; color: #64748b;">
+            Piezas: <strong style="color: #1e293b;">S/ {{ totalPiezas(seleccionado) | number:'1.2-2' }}</strong>
+            + Mano de obra: <strong style="color: #1e293b;">S/ {{ manoObraNumero | number:'1.2-2' }}</strong>
+            = Total: <strong style="color: #15803d; font-size: 14px;">S/ {{ totalPiezas(seleccionado) + manoObraNumero | number:'1.2-2' }}</strong>
+          </div>
+          <button class="btn-azul" (click)="generar()">Generar orden</button>
+        </div>
       </div>
 
-      <div class="resumen" *ngIf="seleccionado">
-        Piezas: <strong>S/ {{ totalPiezas(seleccionado) | number:'1.2-2' }}</strong>
-        + Mano de obra: <strong>S/ {{ manoObraNumero | number:'1.2-2' }}</strong>
-        = Total: <strong>S/ {{ totalPiezas(seleccionado) + manoObraNumero | number:'1.2-2' }}</strong>
-      </div>
-
-      <!-- Lista -->
-      <h3>Órdenes emitidas</h3>
+      <!-- Lista de Órdenes Emitidas -->
+      <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e3a8a; margin-bottom: 12px;">Órdenes emitidas</h3>
       <p class="nota" *ngIf="ordenes.length === 0">Aún no se han emitido órdenes.</p>
 
       <div class="tabla-scroll" *ngIf="ordenes.length > 0">
         <table>
-          <tr>
-            <th>N° OT</th><th>Proyecto</th><th>Vehículo / Cliente</th><th>Fecha</th>
-            <th>Piezas</th><th>Total piezas</th><th>Mano de obra</th><th>Total</th><th>Emitida por</th>
-          </tr>
-          <tr *ngFor="let o of ordenes">
-            <td>{{ codigo(o.id) }}</td>
-            <td>N° {{ o.proyectoId }} - {{ o.proyecto }}</td>
-            <td>{{ o.vehiculo }}<br /><span class="nota">{{ o.cliente }}</span></td>
-            <td>{{ o.fechaEmision | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>
-              <div *ngFor="let d of o.piezas">{{ d.cantidad }} × {{ d.pieza }}</div>
-              <div class="nota" *ngIf="o.observaciones">Obs.: {{ o.observaciones }}</div>
-            </td>
-            <td>S/ {{ o.totalPiezas | number:'1.2-2' }}</td>
-            <td>S/ {{ o.manoObra | number:'1.2-2' }}</td>
-            <td><strong>S/ {{ o.total | number:'1.2-2' }}</strong></td>
-            <td>{{ o.emitidaPor }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>N° OT</th>
+              <th>Proyecto</th>
+              <th>Vehículo / Cliente</th>
+              <th>Fecha</th>
+              <th>Piezas</th>
+              <th>Total piezas</th>
+              <th>Mano de obra</th>
+              <th>Total</th>
+              <th>Emitida por</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let o of ordenes">
+              <td><strong style="color: #1d4ed8;">{{ codigo(o.id) }}</strong></td>
+              <td><strong>N° {{ o.proyectoId }} - {{ o.proyecto }}</strong></td>
+              <td>{{ o.vehiculo }}<br /><span style="font-size: 12px; color: #64748b;">{{ o.cliente }}</span></td>
+              <td style="color: #64748b; font-size: 13px;">{{ o.fechaEmision | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <div *ngFor="let d of o.piezas" style="font-size: 13px; margin-bottom: 2px;">
+                  • {{ d.cantidad }} × {{ d.pieza }}
+                </div>
+                <div *ngIf="o.observaciones" style="font-size: 12px; color: #64748b; margin-top: 4px;">Obs.: {{ o.observaciones }}</div>
+              </td>
+              <td>S/ {{ o.totalPiezas | number:'1.2-2' }}</td>
+              <td>S/ {{ o.manoObra | number:'1.2-2' }}</td>
+              <td><strong style="color: #15803d;">S/ {{ o.total | number:'1.2-2' }}</strong></td>
+              <td style="color: #64748b; font-size: 13px;">{{ o.emitidaPor }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
   `,
   styles: [`
-    section { margin-top: 24px; font-family: Arial, sans-serif; }
-    .encabezado { display: flex; justify-content: space-between; align-items: center; }
-    h3 { margin: 16px 0 8px; font-size: 1.05rem; }
-    .nota { color: #555; margin: 4px 0; font-size: .9rem; }
-    .fila { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; }
-    label { display: flex; flex-direction: column; gap: 2px; font-size: .85rem; font-weight: bold; }
-    select, input { padding: 6px; font-weight: normal; }
-    .num { width: 110px; }
-    .texto { min-width: 220px; }
-    button { padding: 6px 12px; cursor: pointer; }
-    .resumen { margin-top: 10px; padding: 10px; background: #f3f7ff; border: 1px solid #c5d3f5; border-radius: 6px; }
-    .aviso { padding: 10px 14px; border-radius: 6px; margin: 10px 0; font-weight: bold; }
-    .aviso.ok { background: #e6f7ec; color: #14683a; border: 1px solid #9fd8b4; }
-    .aviso.error { background: #fdeaea; color: #9b1c1c; border: 1px solid #f1aeae; }
-    .tabla-scroll { overflow-x: auto; }
-    table { border-collapse: collapse; width: 100%; }
-    th, td { border: 1px solid #bbb; padding: 8px; text-align: left; vertical-align: top; }
-    th { background: #f0f0f0; }
+    section { 
+      background: #ffffff;
+      margin-top: 24px; 
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+    }
+    .nota { color: #64748b; font-size: 13px; margin: 6px 0 12px 0; }
+    .fila { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; margin-top: 10px; }
+    
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .input-amplio {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .input-amplio:focus {
+      border-color: #2563eb;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .tabla-scroll { 
+      overflow-x: auto; 
+      margin-top: 14px; 
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    table { 
+      border-collapse: collapse; 
+      width: 100%; 
+      background-color: #ffffff;
+      font-size: 14px;
+    }
+    th, td { 
+      border-bottom: 1px solid #e2e8f0; 
+      padding: 12px 16px; 
+      text-align: left; 
+      vertical-align: middle; 
+    }
+    th { 
+      background: #f8fafc; 
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    tr:hover td {
+      background-color: #f8fafc;
+    }
+    .btn-azul {
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-azul:hover {
+      background: #1d4ed8;
+    }
+    .btn-azul:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
   `]
 })
 export class OrdenesComponent implements OnInit {

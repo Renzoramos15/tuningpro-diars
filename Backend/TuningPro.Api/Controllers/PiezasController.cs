@@ -14,11 +14,12 @@ namespace TuningPro.Api.Controllers;
 public class PiezasController : ControllerBase
 {
     private readonly IRepository<Pieza> _repo;
+    private readonly IPiezaService _piezas;
     private readonly IInventarioService _inventario;
 
-    public PiezasController(IRepository<Pieza> repo, IInventarioService inventario)
+    public PiezasController(IRepository<Pieza> repo, IPiezaService piezas, IInventarioService inventario)
     {
-        _repo = repo; _inventario = inventario;
+        _repo = repo; _piezas = piezas; _inventario = inventario;
     }
 
     [HttpGet]
@@ -26,12 +27,23 @@ public class PiezasController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = RolesTaller.AdminAuxiliar)]
-    public async Task<IActionResult> Post(Pieza pieza)
+    public async Task<IActionResult> Crear(PiezaDto dto)
     {
-        pieza.Id = 0;
-        await _repo.AddAsync(pieza);
-        await _repo.SaveAsync();
-        return Created($"api/piezas/{pieza.Id}", pieza);
+        try
+        {
+            var pieza = await _piezas.CrearAsync(Mapear(dto));
+            return Created($"api/piezas/{pieza.Id}", pieza);
+        }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = RolesTaller.AdminAuxiliar)]
+    public async Task<IActionResult> Actualizar(int id, PiezaDto dto)
+    {
+        try { return Ok(await _piezas.ActualizarAsync(id, Mapear(dto))); }
+        catch (KeyNotFoundException ex) { return NotFound(new { mensaje = ex.Message }); }
+        catch (InvalidOperationException ex) { return BadRequest(new { mensaje = ex.Message }); }
     }
 
     [HttpPost("{id}/movimiento")]
@@ -45,4 +57,15 @@ public class PiezasController : ControllerBase
 
     [HttpGet("alertas")]
     public async Task<IActionResult> Alertas() => Ok(await _inventario.ObtenerAlertasAsync());
+
+    private static Pieza Mapear(PiezaDto d) => new()
+    {
+        Codigo = d.Codigo ?? string.Empty,
+        Nombre = d.Nombre ?? string.Empty,
+        Marca = d.Marca ?? string.Empty,
+        Categoria = d.Categoria ?? string.Empty,
+        Stock = d.Stock,
+        PrecioUnitario = d.PrecioUnitario,
+        ProveedorId = d.ProveedorId
+    };
 }
