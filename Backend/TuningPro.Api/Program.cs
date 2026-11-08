@@ -10,8 +10,12 @@ using TuningPro.Business.Services;
 using TuningPro.Business.Strategies;
 using TuningPro.Data;
 using TuningPro.Data.Repositories;
+using QuestPDF.Infrastructure;
+using TuningPro.Api.Reportes;
+using TuningPro.Business.Reportes;
 
 var builder = WebApplication.CreateBuilder(args);
+QuestPDF.Settings.License = LicenseType.Community;
 
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
@@ -93,6 +97,9 @@ builder.Services.AddScoped<IOrdenTrabajoService, OrdenTrabajoService>();
 builder.Services.AddScoped<IVehiculoService, VehiculoService>();
 builder.Services.AddScoped<IProveedorService, ProveedorService>();
 builder.Services.AddScoped<IPiezaService, PiezaService>();
+builder.Services.AddScoped<IHistorialService, HistorialService>();
+builder.Services.AddSingleton<IReporteExportador, QuestPdfExportador>();   // Adapter
+builder.Services.AddScoped<IReporteService, ReporteService>();
 
 var app = builder.Build();
 

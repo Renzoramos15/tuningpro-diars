@@ -17,71 +17,218 @@ interface ClienteCuenta { id: number; nombreUsuario: string; nombreCompleto: str
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <h3>Vehículos</h3>
+    <h3 style="font-size: 1.15rem; font-weight: 700; color: #1e3a8a; margin-bottom: 16px;">Vehículos</h3>
 
     <div *ngIf="mensaje" class="aviso" [class.error]="esError" [class.ok]="!esError">
       {{ esError ? '❌' : '✅' }} {{ mensaje }}
     </div>
 
-    <div class="formulario" *ngIf="puedeEditar">
-      <strong>{{ id == null ? 'Nuevo vehículo' : 'Editando vehículo N° ' + id }}</strong>
+    <!-- Formulario de Registro / Edición -->
+    <div class="formulario-card" *ngIf="puedeEditar">
+      <strong style="color: #1e3a8a; font-size: 14px; display: block; margin-bottom: 12px;">
+        {{ id == null ? 'Nuevo vehículo' : 'Editando vehículo N° ' + id }}
+      </strong>
+      
       <div class="fila">
-        <label>Placa
-          <input type="text" [(ngModel)]="placa" placeholder="ABC-123" class="num" />
+        <label style="flex: 1; min-width: 130px;">
+          Placa
+          <input type="text" [(ngModel)]="placa" placeholder="ABC-123" class="input-amplio" />
         </label>
-        <label>Marca
-          <input type="text" [(ngModel)]="marca" />
+        <label style="flex: 1.5; min-width: 160px;">
+          Marca
+          <input type="text" [(ngModel)]="marca" placeholder="Ej. Toyota" class="input-amplio" />
         </label>
-        <label>Modelo
-          <input type="text" [(ngModel)]="modelo" />
+        <label style="flex: 1.5; min-width: 160px;">
+          Modelo
+          <input type="text" [(ngModel)]="modelo" placeholder="Ej. Supra" class="input-amplio" />
         </label>
-        <label>Año
-          <input type="number" min="1950" [(ngModel)]="anio" class="num" />
+        <label style="flex: 1; min-width: 100px;">
+          Año
+          <input type="number" min="1950" [(ngModel)]="anio" class="input-amplio" />
         </label>
-        <label>Nombre del cliente
-          <input type="text" [(ngModel)]="clienteNombre" />
+        <label style="flex: 2; min-width: 200px;">
+          Nombre del cliente
+          <input type="text" [(ngModel)]="clienteNombre" placeholder="Nombre completo" class="input-amplio" />
         </label>
-        <label>Cuenta del portal
-          <select [(ngModel)]="usuarioId">
+        <label style="flex: 2; min-width: 220px;">
+          Cuenta del portal
+          <select [(ngModel)]="usuarioId" class="input-amplio">
             <option [ngValue]="null">Sin cuenta de portal</option>
             <option *ngFor="let c of clientes" [ngValue]="c.id">{{ c.nombreCompleto }} ({{ c.nombreUsuario }})</option>
           </select>
         </label>
-        <button (click)="guardar()">{{ id == null ? 'Registrar' : 'Guardar cambios' }}</button>
-        <button *ngIf="id != null" (click)="limpiar()">Cancelar</button>
       </div>
-      <p class="nota">La cuenta del portal permite que el cliente vea este vehículo y sus proyectos al iniciar sesión.</p>
+
+      <div style="display: flex; gap: 10px; margin-top: 16px; align-items: center;">
+        <button class="btn-azul" (click)="guardar()">{{ id == null ? 'Registrar' : 'Guardar cambios' }}</button>
+        <button class="btn-secundario" *ngIf="id != null" (click)="limpiar()">Cancelar</button>
+      </div>
+
+      <p class="nota" style="margin-top: 12px;">La cuenta del portal permite que el cliente vea este vehículo y sus proyectos al iniciar sesión.</p>
     </div>
 
-    <div class="fila">
-      <label>Buscar por placa, marca, modelo o cliente
-        <input type="text" [(ngModel)]="buscar" (keyup.enter)="cargar()" placeholder="Ej. Torres" />
+    <!-- Barra de Búsqueda -->
+    <div class="fila" style="margin-bottom: 16px; align-items: flex-end;">
+      <label style="flex: 3; min-width: 260px;">
+        Buscar por placa, marca, modelo o cliente
+        <input type="text" [(ngModel)]="buscar" (keyup.enter)="cargar()" placeholder="Ej. Torres" class="input-amplio" />
       </label>
-      <button (click)="cargar()">Buscar</button>
-      <button (click)="limpiarBusqueda()" *ngIf="buscar">Limpiar</button>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn-azul" (click)="cargar()">Buscar</button>
+        <button class="btn-secundario" (click)="limpiarBusqueda()" *ngIf="buscar">Limpiar</button>
+      </div>
     </div>
 
     <p class="nota" *ngIf="vehiculos.length === 0">No se encontraron vehículos.</p>
+
+    <!-- Tabla Moderna -->
     <div class="tabla-scroll" *ngIf="vehiculos.length > 0">
       <table>
-        <tr>
-          <th>Placa</th><th>Vehículo</th><th>Año</th><th>Cliente</th><th>Cuenta del portal</th>
-          <th *ngIf="puedeEditar">Acción</th>
-        </tr>
-        <tr *ngFor="let v of vehiculos">
-          <td>{{ v.placa }}</td>
-          <td>{{ v.marca }} {{ v.modelo }}</td>
-          <td>{{ v.anio }}</td>
-          <td>{{ v.clienteNombre }}</td>
-          <td>
-            <span *ngIf="v.usuarioId != null" class="etiqueta">{{ cuenta(v) }}</span>
-            <span *ngIf="v.usuarioId == null" class="sin-cuenta">Sin cuenta</span>
-          </td>
-          <td *ngIf="puedeEditar"><button (click)="editar(v)">Editar</button></td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Placa</th>
+            <th>Vehículo</th>
+            <th>Año</th>
+            <th>Cliente</th>
+            <th>Cuenta del portal</th>
+            <th *ngIf="puedeEditar">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let v of vehiculos">
+            <td><strong style="color: #1d4ed8;">{{ v.placa }}</strong></td>
+            <td><strong>{{ v.marca }} {{ v.modelo }}</strong></td>
+            <td>{{ v.anio }}</td>
+            <td>{{ v.clienteNombre }}</td>
+            <td>
+              <span *ngIf="v.usuarioId != null" class="etiqueta">{{ cuenta(v) }}</span>
+              <span *ngIf="v.usuarioId == null" class="sin-cuenta" style="color: #94a3b8; font-size: 13px;">Sin cuenta</span>
+            </td>
+            <td *ngIf="puedeEditar">
+              <button class="btn-azul" style="padding: 6px 12px; font-size: 12px;" (click)="editar(v)">Editar</button>
+            </td>
+          </tr>
+        </tbody>
       </table>
     </div>
-  `
+  `,
+  styles: [`
+    .nota { color: #64748b; font-size: 13px; margin: 6px 0 12px 0; }
+    .fila { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; margin-top: 12px; }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      color: #475569;
+    }
+
+    .input-amplio {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      background-color: #f8fafc;
+      color: #0f172a;
+      box-sizing: border-box;
+      transition: all 0.2s ease;
+    }
+
+    .input-amplio:focus {
+      border-color: #2563eb;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .formulario-card {
+      background: #f8fafc; 
+      padding: 18px; 
+      border-radius: 12px; 
+      border: 1.5px solid #e2e8f0; 
+      margin-bottom: 20px;
+    }
+
+    .tabla-scroll { 
+      overflow-x: auto; 
+      margin-top: 14px; 
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+    table { 
+      border-collapse: collapse; 
+      width: 100%; 
+      background-color: #ffffff;
+      font-size: 14px;
+    }
+    th, td { 
+      border-bottom: 1px solid #e2e8f0; 
+      padding: 12px 16px; 
+      text-align: left; 
+      vertical-align: middle; 
+    }
+    th { 
+      background: #f8fafc; 
+      font-weight: 600;
+      color: #475569;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+    tr:hover td { background-color: #f8fafc; }
+
+    .btn-azul {
+      padding: 8px 16px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-azul:hover { background: #1d4ed8; }
+
+    .btn-secundario {
+      padding: 8px 16px;
+      background: #e2e8f0;
+      color: #334155;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn-secundario:hover { background: #cbd5e1; }
+
+    .etiqueta {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #e0f2fe;
+      color: #0369a1;
+      display: inline-block;
+    }
+
+    .aviso { 
+      padding: 12px 16px; 
+      border-radius: 10px; 
+      margin: 16px 0; 
+      font-weight: 600; 
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .aviso.ok { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .aviso.error { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+  `]
 })
 export class VehiculosComponent implements OnInit {
   @Output() cambio = new EventEmitter<void>();

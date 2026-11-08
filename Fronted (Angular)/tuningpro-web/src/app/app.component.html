@@ -134,8 +134,10 @@
 
         <!-- ================= ÓRDENES DE TRABAJO ================= -->
     <app-ordenes *ngIf="puedeOrdenes"></app-ordenes>
-        <app-ordenes *ngIf="puedeOrdenes"></app-ordenes>
-
+    <!-- ================= HISTORIAL TÉCNICO ================= -->
+    <app-historial></app-historial>
+    <app-reportes></app-reportes>
+    <!-- ================= GESTIÓN DE DATOS ================= -->
     <app-gestion (cambio)="recargarMaestros()"></app-gestion>
 
 

@@ -7,11 +7,13 @@ import { LoginComponent } from './login.component';
 import { PortalComponent } from './portal.component';
 import { OrdenesComponent } from './ordenes.component';
 import { GestionComponent } from './gestion.component';
+import { HistorialComponent } from './historial.component';
+import { ReportesComponent } from './reportes.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent, GestionComponent],
+imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent, HistorialComponent, GestionComponent, ReportesComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

@@ -100,6 +100,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TuningPro.Api.Controllers.HistorialController",
+    "Method": "Get",
+    "RelativePath": "api/Historial/{vehiculoId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehiculoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TuningPro.Api.Controllers.OrdenesController",
     "Method": "Listar",
     "RelativePath": "api/Ordenes",
@@ -342,6 +358,42 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ReportesController",
+    "Method": "Historial",
+    "RelativePath": "api/Reportes/historial/{vehiculoId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "vehiculoId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ReportesController",
+    "Method": "Inventario",
+    "RelativePath": "api/Reportes/inventario",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "TuningPro.Api.Controllers.ReportesController",
+    "Method": "Proyectos",
+    "RelativePath": "api/Reportes/proyectos",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {
