@@ -8,7 +8,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.AdminTecnico)]
 public class CompatibilidadController : ControllerBase
 {
     private readonly ICompatibilidadService _service;

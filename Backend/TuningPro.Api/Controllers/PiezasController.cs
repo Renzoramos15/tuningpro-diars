@@ -10,7 +10,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.Inventario)]
 public class PiezasController : ControllerBase
 {
     private readonly IRepository<Pieza> _repo;

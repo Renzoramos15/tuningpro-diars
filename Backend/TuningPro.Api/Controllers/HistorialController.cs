@@ -7,7 +7,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.GestionProyectos)]
 public class HistorialController : ControllerBase
 {
     private readonly IHistorialService _service;

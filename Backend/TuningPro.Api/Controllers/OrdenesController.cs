@@ -8,7 +8,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.GestionProyectos)]
+[Authorize(Roles = RolesTaller.AdminRecepcion)]
 public class OrdenesController : ControllerBase
 {
     private readonly IOrdenTrabajoService _service;

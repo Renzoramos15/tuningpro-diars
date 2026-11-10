@@ -10,6 +10,8 @@ public static class RolesTaller
 
     // Combinaciones para [Authorize(Roles = ...)]
     public const string Personal = "Administrador,Tecnico,Auxiliar,Recepcionista";
+    public const string SoloAdmin = "Administrador";
+    public const string Inventario = "Administrador,Tecnico,Auxiliar";
     public const string AdminTecnico = "Administrador,Tecnico";
     public const string AdminAuxiliar = "Administrador,Auxiliar";
     public const string AdminRecepcion = "Administrador,Recepcionista";

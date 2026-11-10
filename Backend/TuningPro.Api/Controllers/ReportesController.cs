@@ -8,7 +8,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.SoloAdmin)]
 public class ReportesController : ControllerBase
 {
     private readonly IReporteService _service;
@@ -20,11 +20,9 @@ public class ReportesController : ControllerBase
         File(archivo.Contenido, "application/pdf", archivo.NombreArchivo);
 
     [HttpGet("inventario")]
-    [Authorize(Roles = RolesTaller.AdminAuxiliar)]
     public async Task<IActionResult> Inventario() => Pdf(await _service.InventarioAsync(Usuario));
 
     [HttpGet("proyectos")]
-    [Authorize(Roles = RolesTaller.GestionProyectos)]
     public async Task<IActionResult> Proyectos() => Pdf(await _service.ProyectosAsync(Usuario));
 
     [HttpGet("historial/{vehiculoId}")]

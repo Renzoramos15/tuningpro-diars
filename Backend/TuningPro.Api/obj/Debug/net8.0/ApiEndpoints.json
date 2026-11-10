@@ -361,6 +361,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "TuningPro.Api.Controllers.ProyectosController",
+    "Method": "Transiciones",
+    "RelativePath": "api/Proyectos/transiciones",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "TuningPro.Api.Controllers.ReportesController",
     "Method": "Historial",
     "RelativePath": "api/Reportes/historial/{vehiculoId}",

@@ -9,7 +9,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.AdminAuxiliar)]
 public class ProveedoresController : ControllerBase
 {
     private readonly IProveedorService _service;

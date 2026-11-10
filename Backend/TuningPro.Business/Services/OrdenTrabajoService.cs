@@ -37,6 +37,8 @@ public class OrdenTrabajoService : IOrdenTrabajoService
 
         var proyecto = await _proyectos.GetConDetallesAsync(proyectoId)
                        ?? throw new KeyNotFoundException("Proyecto no encontrado.");
+        if (proyecto.Estado is "Cancelado" or "Rechazado")
+            throw new InvalidOperationException($"No se puede generar una orden de un proyecto {proyecto.Estado.ToLower()}.");
 
         if (await _ordenes.ExisteParaProyectoAsync(proyectoId))
             throw new InvalidOperationException("El proyecto ya tiene una orden de trabajo.");

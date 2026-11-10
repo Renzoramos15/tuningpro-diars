@@ -8,14 +8,17 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.GestionProyectos)]
 public class ProyectosController : ControllerBase
 {
     private readonly IProyectoService _service;
     public ProyectosController(IProyectoService service) => _service = service;
 
     [HttpGet]
-    public async Task<IActionResult> Listar() => Ok(await _service.ListarAsync());
+    public async Task<IActionResult> Listar() => Ok(await _service.ListarConDetalleAsync());
+
+    [HttpGet("transiciones")]
+    public IActionResult Transiciones() => Ok(_service.Transiciones);
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id)
@@ -23,6 +26,7 @@ public class ProyectosController : ControllerBase
         var p = await _service.ObtenerAsync(id);
         return p is null ? NotFound() : Ok(p);
     }
+
 
     [HttpPost]
     [Authorize(Roles = RolesTaller.GestionProyectos)]

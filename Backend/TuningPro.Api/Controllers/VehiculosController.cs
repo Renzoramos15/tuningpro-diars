@@ -9,7 +9,7 @@ namespace TuningPro.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RolesTaller.Personal)]
+[Authorize(Roles = RolesTaller.GestionProyectos)]
 public class VehiculosController : ControllerBase
 {
     private readonly IVehiculoService _service;

@@ -494,6 +494,18 @@
         }
       }
     },
+    "/api/Proyectos/transiciones": {
+      "get": {
+        "tags": [
+          "Proyectos"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Proyectos/{id}": {
       "get": {
         "tags": [

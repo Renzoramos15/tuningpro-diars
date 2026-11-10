@@ -108,18 +108,37 @@ public class InventarioService : IInventarioService
 }
 
 // ---------- Proyectos ----------
+public record ProyectoDetalleListadoDto(int Id, int ProyectoId, int PiezaId, string PiezaNombre,
+    int Cantidad, decimal PrecioUnitario);
+
+public record ProyectoListadoDto(int Id, string Nombre, int VehiculoId, string Estado,
+    DateTime FechaRegistro, List<ProyectoDetalleListadoDto> Detalles);
+
 public interface IProyectoService
 {
+    IReadOnlyDictionary<string, string[]> Transiciones { get; }
     Task<Proyecto> CrearAsync(string nombre, int vehiculoId);
     Task<Proyecto> AsignarPiezaAsync(int proyectoId, int piezaId, int cantidad);
     Task<Proyecto?> ObtenerAsync(int id);
     Task<List<Proyecto>> ListarAsync();
+    Task<List<ProyectoListadoDto>> ListarConDetalleAsync();
     Task<Proyecto> CambiarEstadoAsync(int id, string estado);
 }
 
 public class ProyectoService : IProyectoService
 {
-    private static readonly string[] EstadosValidos = { "Registrado", "En proceso", "Finalizado" };
+    // RF09: estados del proyecto y cambios permitidos entre ellos
+    private static readonly Dictionary<string, string[]> TransicionesPermitidas = new()
+    {
+        ["Registrado"] = new[] { "En proceso", "Rechazado", "Cancelado" },
+        ["En proceso"] = new[] { "En pausa", "Finalizado", "Cancelado" },
+        ["En pausa"] = new[] { "En proceso", "Cancelado" },
+        ["Finalizado"] = Array.Empty<string>(),
+        ["Cancelado"] = Array.Empty<string>(),
+        ["Rechazado"] = Array.Empty<string>()
+    };
+
+    public IReadOnlyDictionary<string, string[]> Transiciones => TransicionesPermitidas;
 
     private readonly IProyectoRepository _proyectos;
     private readonly IRepository<Pieza> _piezas;
@@ -127,9 +146,8 @@ public class ProyectoService : IProyectoService
     private readonly IInventarioService _inventario;
     private readonly IOrdenTrabajoRepository _ordenes;
 
-
     public ProyectoService(IProyectoRepository proyectos, IRepository<Pieza> piezas,
-    ICompatibilidadService compat, IInventarioService inventario, IOrdenTrabajoRepository ordenes)
+        ICompatibilidadService compat, IInventarioService inventario, IOrdenTrabajoRepository ordenes)
     {
         _proyectos = proyectos; _piezas = piezas; _compat = compat; _inventario = inventario;
         _ordenes = ordenes;
@@ -150,9 +168,14 @@ public class ProyectoService : IProyectoService
         var pieza = await _piezas.GetByIdAsync(piezaId)
                     ?? throw new KeyNotFoundException("Pieza no encontrada.");
 
-        if (proyecto.Estado == "Finalizado")
-            if (await _ordenes.ExisteParaProyectoAsync(proyectoId))
-                throw new InvalidOperationException("El proyecto ya tiene una orden de trabajo emitida, no admite más piezas.");
+        if (proyecto.Estado is "Finalizado" or "Cancelado" or "Rechazado")
+            throw new InvalidOperationException($"El proyecto está {proyecto.Estado.ToLower()}, no admite más piezas.");
+
+        if (proyecto.Estado == "En pausa")
+            throw new InvalidOperationException("El proyecto está en pausa. Reanúdalo para asignar piezas.");
+
+        if (await _ordenes.ExisteParaProyectoAsync(proyectoId))
+            throw new InvalidOperationException("El proyecto ya tiene una orden de trabajo emitida, no admite más piezas.");
 
         // 1) Validar compatibilidad (Strategy)
         var resultado = await _compat.ValidarAsync(proyecto.VehiculoId, piezaId);
@@ -177,13 +200,43 @@ public class ProyectoService : IProyectoService
 
     public Task<List<Proyecto>> ListarAsync() => _proyectos.GetAllConDetallesAsync();
 
+    public async Task<List<ProyectoListadoDto>> ListarConDetalleAsync()
+    {
+        var proyectos = await _proyectos.GetAllConDetallesAsync();
+        var piezas = (await _piezas.GetAllAsync()).ToDictionary(p => p.Id, p => p.Nombre);
+
+        return proyectos.Select(p => new ProyectoListadoDto(
+            p.Id, p.Nombre, p.VehiculoId, p.Estado, p.FechaRegistro,
+            p.Detalles.Select(d => new ProyectoDetalleListadoDto(
+                d.Id, d.ProyectoId, d.PiezaId,
+                piezas.GetValueOrDefault(d.PiezaId, $"Pieza #{d.PiezaId}"),
+                d.Cantidad, d.PrecioUnitario)).ToList()
+        )).ToList();
+    }
+
     public async Task<Proyecto> CambiarEstadoAsync(int id, string estado)
     {
-        if (!EstadosValidos.Contains(estado))
+        estado = (estado ?? string.Empty).Trim();
+        if (!TransicionesPermitidas.ContainsKey(estado))
             throw new InvalidOperationException("Estado no válido.");
 
         var proyecto = await _proyectos.GetConDetallesAsync(id)
                        ?? throw new KeyNotFoundException("Proyecto no encontrado.");
+
+        if (!TransicionesPermitidas.TryGetValue(proyecto.Estado, out var permitidos) || !permitidos.Contains(estado))
+            throw new InvalidOperationException($"No se puede pasar de \"{proyecto.Estado}\" a \"{estado}\".");
+
+        if (estado is "Cancelado" or "Rechazado")
+        {
+            if (await _ordenes.ExisteParaProyectoAsync(id))
+                throw new InvalidOperationException(
+                    "El proyecto ya tiene una orden de trabajo emitida; no se puede cancelar ni rechazar.");
+
+            // Las piezas asignadas vuelven al inventario (borra este bloque si el equipo decide no reponer el stock)
+            foreach (var d in proyecto.Detalles)
+                await _inventario.RegistrarMovimientoAsync(d.PiezaId, d.Cantidad, esEntrada: true);
+        }
+
         proyecto.Estado = estado;
         await _proyectos.SaveAsync();
         return proyecto;

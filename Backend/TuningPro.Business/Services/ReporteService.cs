@@ -96,14 +96,22 @@ public class ReporteService : IReporteService
                 totalOrdenes += orden.Total;
             }
 
+            // Cancelados y rechazados no muestran monto
+            var sinMonto = p.Estado is "Cancelado" or "Rechazado";
+
             filas.Add(new[]
             {
                 p.Id.ToString(), p.Nombre,
                 v is null ? $"#{p.VehiculoId}" : $"{v.Marca} {v.Modelo} ({v.Placa})",
                 v?.ClienteNombre ?? string.Empty,
-                p.Estado, p.FechaRegistro.ToString("dd/MM/yy"), codigoOrden, Soles(total)
+                p.Estado, p.FechaRegistro.ToString("dd/MM/yy"), codigoOrden,
+                sinMonto ? "—" : Soles(total)
             });
         }
+
+        var registrados = proyectos.Count(p => p.Estado == "Registrado");
+        var cancelados = proyectos.Count(p => p.Estado == "Cancelado");
+        var rechazados = proyectos.Count(p => p.Estado == "Rechazado");
 
         var seccion = new ReporteSeccion(
             "Proyectos de personalización",
@@ -111,6 +119,7 @@ public class ReporteService : IReporteService
             {
                 new("Proyectos", proyectos.Count.ToString()),
                 new("En proceso", proyectos.Count(p => p.Estado == "En proceso").ToString()),
+                new("En pausa", proyectos.Count(p => p.Estado == "En pausa").ToString()),
                 new("Finalizados", proyectos.Count(p => p.Estado == "Finalizado").ToString()),
                 new("Total en órdenes", Soles(totalOrdenes))
             },
@@ -119,7 +128,9 @@ public class ReporteService : IReporteService
                 filas,
                 new float[] { 0.5f, 1.7f, 2.2f, 1.6f, 1.0f, 0.9f, 0.9f, 1.2f },
                 new[] { 7 }),
-            "El total es el monto de la orden de trabajo; si el proyecto aún no la tiene, se muestra el costo de las piezas instaladas.");
+            "El total es el monto de la orden de trabajo; si el proyecto aún no la tiene, se muestra el costo de las piezas instaladas. " +
+            "Los proyectos cancelados o rechazados no muestran monto. " +
+            $"Registrados: {registrados} · Cancelados: {cancelados} · Rechazados: {rechazados}.");
 
         return Pdf(Documento("Reporte de proyectos y órdenes de trabajo", "Trazabilidad de proyectos", generadoPor,
             new List<ReporteSeccion> { seccion }), "proyectos");
@@ -168,7 +179,11 @@ public class ReporteService : IReporteService
                     new[] { 4, 5, 6 });
 
             string nota;
-            if (p.Orden is { } o)
+            if (p.Estado == "Cancelado")
+                nota = "Proyecto cancelado: las piezas asignadas volvieron al inventario.";
+            else if (p.Estado == "Rechazado")
+                nota = "Proyecto rechazado.";
+            else if (p.Orden is { } o)
                 nota = $"{CodigoOrden(o.Id)} emitida el {o.FechaEmision:dd/MM/yyyy} por {o.EmitidaPor}. " +
                        $"Piezas: {Soles(o.TotalPiezas)} · Mano de obra: {Soles(o.ManoObra)} · Total: {Soles(o.Total)}";
             else if (p.Piezas.Count == 0)

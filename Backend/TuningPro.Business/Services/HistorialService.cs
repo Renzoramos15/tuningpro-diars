@@ -71,9 +71,10 @@ public class HistorialService : IHistorialService
             return new HistorialProyectoDto(p.Id, p.Nombre, p.Estado, p.FechaRegistro, detalle, totalPiezas, orden);
         }).ToList();
 
-        // Inversión: total de la orden si ya se emitió; si no, el costo de las piezas instaladas
-        var inversion = proyectosDto.Sum(p => p.Orden?.Total ?? p.TotalPiezas);
-        var piezasInstaladas = proyectosDto.Sum(p => p.Piezas.Sum(x => x.Cantidad));
+        // Los proyectos cancelados o rechazados no cuentan: sus piezas volvieron al inventario
+        var vigentes = proyectosDto.Where(p => p.Estado != "Cancelado" && p.Estado != "Rechazado").ToList();
+        var inversion = vigentes.Sum(p => p.Orden?.Total ?? p.TotalPiezas);
+        var piezasInstaladas = vigentes.Sum(p => p.Piezas.Sum(x => x.Cantidad));
 
         return new HistorialVehiculoDto(vehiculo.Id, vehiculo.Placa, vehiculo.Marca, vehiculo.Modelo,
             vehiculo.Anio, vehiculo.ClienteNombre, proyectosDto.Count, piezasInstaladas, inversion, proyectosDto);
