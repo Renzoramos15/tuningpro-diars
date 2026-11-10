@@ -14,17 +14,25 @@
 
   <h1>TuningPro – Taller de Personalización Automotriz</h1>
 
+  <!-- Menú según el rol -->
+  <div class="menu" *ngIf="menu.length > 0">
+    <button *ngFor="let m of menu" [class.activo]="m.id === vista" (click)="irA(m.id)">
+      {{ m.texto }}
+    </button>
+  </div>
+
   <div *ngIf="mensaje" class="aviso" [class.error]="esError" [class.ok]="!esError">
     {{ esError ? '❌' : '✅' }} {{ mensaje }}
   </div>
 
-  <!-- Rol Cliente: portal de consulta -->
+  <!-- ================= CLIENTE: portal ================= -->
   <app-portal *ngIf="auth.puede('Cliente')"></app-portal>
 
+  <!-- ================= PERSONAL DEL TALLER ================= -->
   <ng-container *ngIf="esPersonal">
 
-    <!-- ================= INVENTARIO ================= -->
-    <section>
+    <!-- ========== INVENTARIO (Administrador, Técnico, Auxiliar) ========== -->
+    <section *ngIf="vista === 'inventario' && verInventario">
       <h2>Inventario de piezas</h2>
 
       <label *ngIf="puedeValidar">
@@ -63,83 +71,92 @@
       </div>
     </section>
 
-    <!-- ================= NUEVO PROYECTO ================= -->
-    <section *ngIf="puedeCrearProyecto">
-      <h2>Nuevo proyecto de personalización</h2>
-      <div class="fila">
-        <input type="text" placeholder="Nombre (ej. Stage 1)" [(ngModel)]="nuevoNombre" />
-        <select [(ngModel)]="nuevoVehiculoId">
-          <option *ngFor="let v of vehiculos" [ngValue]="v.id">
-            {{ v.marca }} {{ v.modelo }} ({{ v.placa }})
-          </option>
-        </select>
-        <button (click)="crearProyecto()">Crear proyecto</button>
-      </div>
-    </section>
+    <!-- ========== PROYECTOS (Administrador, Técnico, Recepcionista) ========== -->
+    <ng-container *ngIf="vista === 'proyectos' && verProyectos">
 
-    <!-- ================= ASIGNAR PIEZA ================= -->
-    <section *ngIf="puedeAsignar">
-      <h2>Asignar pieza a un proyecto</h2>
-      <p class="nota">El sistema valida la compatibilidad y descuenta el stock automáticamente.</p>
-      <div class="fila">
-        <select [(ngModel)]="asignacion.proyectoId">
-          <option [ngValue]="null" disabled>Proyecto...</option>
-          <option *ngFor="let pr of proyectos" [ngValue]="pr.id">
-            N° {{ pr.id }} - {{ pr.nombre }} ({{ pr.estado }})
-          </option>
-        </select>
-        <select [(ngModel)]="asignacion.piezaId">
-          <option [ngValue]="null" disabled>Pieza...</option>
-          <option *ngFor="let p of piezas" [ngValue]="p.id">
-            {{ p.nombre }} (stock {{ p.stock }})
-          </option>
-        </select>
-        <input type="number" min="1" [(ngModel)]="asignacion.cantidad" class="num" />
-        <button (click)="asignarPieza()">Asignar</button>
-      </div>
-    </section>
+      <section *ngIf="puedeCrearProyecto">
+        <h2>Nuevo proyecto de personalización</h2>
+        <div class="fila">
+          <input type="text" placeholder="Nombre (ej. Stage 1)" [(ngModel)]="nuevoNombre" />
+          <select [(ngModel)]="nuevoVehiculoId">
+            <option *ngFor="let v of vehiculos" [ngValue]="v.id">
+              {{ v.marca }} {{ v.modelo }} ({{ v.placa }})
+            </option>
+          </select>
+          <button (click)="crearProyecto()">Crear proyecto</button>
+        </div>
+      </section>
 
-    <!-- ================= PROYECTOS ================= -->
-    <section>
-      <h2>Proyectos registrados</h2>
-      <p *ngIf="proyectos.length === 0" class="nota">Aún no hay proyectos.</p>
+      <section *ngIf="puedeAsignar">
+        <h2>Asignar pieza a un proyecto</h2>
+        <p class="nota">El sistema valida la compatibilidad y descuenta el stock automáticamente.</p>
+        <div class="fila">
+          <select [(ngModel)]="asignacion.proyectoId">
+            <option [ngValue]="null" disabled>Proyecto...</option>
+            <option *ngFor="let pr of proyectosAbiertos" [ngValue]="pr.id">
+              N° {{ pr.id }} - {{ pr.nombre }} ({{ pr.estado }})
+            </option>
+          </select>
+          <select [(ngModel)]="asignacion.piezaId">
+            <option [ngValue]="null" disabled>Pieza...</option>
+            <option *ngFor="let p of piezas" [ngValue]="p.id">
+              {{ p.nombre }} (stock {{ p.stock }})
+            </option>
+          </select>
+          <input type="number" min="1" [(ngModel)]="asignacion.cantidad" class="num" />
+          <button (click)="asignarPieza()">Asignar</button>
+        </div>
+      </section>
 
-      <div class="tabla-scroll" *ngIf="proyectos.length > 0">
-        <table>
-          <tr>
-            <th>N°</th><th>Proyecto</th><th>Vehículo</th><th>Estado</th>
-            <th>Fecha</th><th>Piezas instaladas</th><th>Total</th>
-            <th *ngIf="puedeFinalizar">Acción</th>
-          </tr>
-          <tr *ngFor="let pr of proyectos">
-            <td>{{ pr.id }}</td>
-            <td>{{ pr.nombre }}</td>
-            <td>{{ textoVehiculo(pr.vehiculoId) }}</td>
-            <td><span class="estado" [attr.data-estado]="pr.estado">{{ pr.estado }}</span></td>
-            <td>{{ pr.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
-            <td>
-              <span *ngIf="pr.detalles.length === 0">—</span>
-              <div *ngFor="let d of pr.detalles">
-                {{ d.cantidad }} × {{ nombrePieza(d.piezaId) }}
-              </div>
-            </td>
-            <td>S/ {{ totalProyecto(pr) | number:'1.2-2' }}</td>
-            <td *ngIf="puedeFinalizar">
-              <button *ngIf="pr.estado !== 'Finalizado'" (click)="finalizar(pr)">Finalizar</button>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </section>
+      <section>
+        <h2>Proyectos registrados</h2>
+        <p *ngIf="proyectos.length === 0" class="nota">Aún no hay proyectos.</p>
 
-        <!-- ================= ÓRDENES DE TRABAJO ================= -->
-    <app-ordenes *ngIf="puedeOrdenes"></app-ordenes>
-    <!-- ================= HISTORIAL TÉCNICO ================= -->
-    <app-historial></app-historial>
-    <app-reportes></app-reportes>
-    <!-- ================= GESTIÓN DE DATOS ================= -->
-    <app-gestion (cambio)="recargarMaestros()"></app-gestion>
+        <div class="tabla-scroll" *ngIf="proyectos.length > 0">
+          <table>
+            <tr>
+              <th>N°</th><th>Proyecto</th><th>Vehículo</th><th>Estado</th>
+              <th>Fecha</th><th>Piezas instaladas</th><th>Total</th>
+              <th *ngIf="puedeFinalizar">Acción</th>
+            </tr>
+            <tr *ngFor="let pr of proyectos">
+              <td>{{ pr.id }}</td>
+              <td>{{ pr.nombre }}</td>
+              <td>{{ textoVehiculo(pr.vehiculoId) }}</td>
+              <td><span class="estado" [attr.data-estado]="pr.estado">{{ pr.estado }}</span></td>
+              <td>{{ pr.fechaRegistro | date:'dd/MM/yyyy HH:mm' }}</td>
+              <td>
+                <span *ngIf="pr.detalles.length === 0">—</span>
+                <div *ngFor="let d of pr.detalles">
+                  {{ d.cantidad }} × {{ d.piezaNombre }}
+                </div>
+              </td>
+              <td>S/ {{ totalProyecto(pr) | number:'1.2-2' }}</td>
+              <td *ngIf="puedeFinalizar">
+                <ng-container *ngIf="opcionesEstado(pr).length > 0; else estadoFinal">
+                  <select [(ngModel)]="nuevoEstado[pr.id]">
+                    <option value="">Cambiar a...</option>
+                    <option *ngFor="let e of opcionesEstado(pr)" [value]="e">{{ e }}</option>
+                  </select>
+                  <button (click)="cambiarEstado(pr)">Aplicar</button>
+                </ng-container>
+                <ng-template #estadoFinal><span class="nota">Estado final</span></ng-template>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
 
+    </ng-container>
+
+    <!-- ========== OTRAS OPCIONES DEL MENÚ ========== -->
+    <app-ordenes *ngIf="vista === 'ordenes' && verOrdenes"></app-ordenes>
+
+    <app-historial *ngIf="vista === 'historial' && verHistorial"></app-historial>
+
+    <app-reportes *ngIf="vista === 'reportes' && verReportes"></app-reportes>
+
+    <app-gestion *ngIf="vista === 'gestion' && verGestion" (cambio)="recargarMaestros()"></app-gestion>
 
   </ng-container>
 </ng-container>

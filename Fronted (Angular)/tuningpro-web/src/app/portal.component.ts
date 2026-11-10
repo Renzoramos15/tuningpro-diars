@@ -56,8 +56,17 @@ interface PortalResumen { cliente: string; vehiculos: PortalVehiculo[]; proyecto
             <span class="estado" [attr.data-estado]="p.estado">{{ p.estado }}</span>
           </div>
 
+          <!-- Avisos de estado -->
+          <div class="aviso-estado pausa" *ngIf="p.estado === 'En pausa'">
+            ⏸ Tu proyecto está en pausa. Consulta con el taller cuándo se reanuda.
+          </div>
+          <div class="aviso-estado cerrado" *ngIf="esCerrado(p.estado)">
+            {{ p.estado === 'Cancelado' ? '🚫 Este proyecto fue cancelado.' : '⛔ Este proyecto fue rechazado.' }}
+            Consulta en el taller para más información.
+          </div>
+
           <!-- Avance -->
-          <div class="pasos">
+          <div class="pasos" *ngIf="!esCerrado(p.estado)">
             <div class="paso" *ngFor="let e of etapas; let i = index"
                  [class.hecho]="i <= indice(p.estado)" [class.actual]="i === indice(p.estado)">
               <span class="punto">{{ i < indice(p.estado) || p.estado === 'Finalizado' ? '✓' : i + 1 }}</span>
@@ -91,7 +100,7 @@ interface PortalResumen { cliente: string; vehiculos: PortalVehiculo[]; proyecto
             <div>Mano de obra: S/ {{ p.orden.manoObra | number:'1.2-2' }}</div>
             <div class="monto">Total a pagar: S/ {{ p.orden.total | number:'1.2-2' }}</div>
           </div>
-          <p class="nota" *ngIf="!p.orden && p.piezas.length > 0">
+          <p class="nota" *ngIf="!p.orden && p.piezas.length > 0 && !esCerrado(p.estado)">
             El taller aún no emite la orden de trabajo con el costo final.
           </p>
         </div>
@@ -117,6 +126,13 @@ interface PortalResumen { cliente: string; vehiculos: PortalVehiculo[]; proyecto
     .estado[data-estado="Registrado"] { background: #e8eefc; color: #1d3f9b; }
     .estado[data-estado="En proceso"] { background: #fff4d6; color: #8a5a00; }
     .estado[data-estado="Finalizado"] { background: #e6f7ec; color: #14683a; }
+    .estado[data-estado="En pausa"] { background: #f1e8fb; color: #5b2a99; }
+    .estado[data-estado="Cancelado"] { background: #eeeeee; color: #555; }
+    .estado[data-estado="Rechazado"] { background: #fdeaea; color: #9b1c1c; }
+
+    .aviso-estado { margin: 12px 0; padding: 10px 14px; border-radius: 6px; font-weight: bold; }
+    .aviso-estado.pausa { background: #f1e8fb; color: #5b2a99; border: 1px solid #d6c0f0; }
+    .aviso-estado.cerrado { background: #fdeaea; color: #9b1c1c; border: 1px solid #f1aeae; }
 
     .pasos { display: flex; gap: 8px; margin: 14px 0; }
     .paso { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
@@ -165,7 +181,12 @@ export class PortalComponent implements OnInit {
   }
 
   indice(estado: string): number {
+    if (estado === 'En pausa') return 1;   // sigue en la etapa "En proceso"
     const i = this.etapas.indexOf(estado);
     return i < 0 ? 0 : i;
+  }
+
+  esCerrado(estado: string): boolean {
+    return estado === 'Cancelado' || estado === 'Rechazado';
   }
 }

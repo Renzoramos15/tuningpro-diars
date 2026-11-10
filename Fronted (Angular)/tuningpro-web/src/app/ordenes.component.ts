@@ -223,7 +223,9 @@ export class OrdenesComponent implements OnInit {
 
   get pendientes(): ProyectoLite[] {
     const conOrden = new Set(this.ordenes.map(o => o.proyectoId));
-    return this.proyectos.filter(p => p.detalles.length > 0 && !conOrden.has(p.id));
+    return this.proyectos.filter(p =>
+      p.detalles.length > 0 && !conOrden.has(p.id) &&
+      p.estado !== 'Cancelado' && p.estado !== 'Rechazado');
   }
 
   get seleccionado(): ProyectoLite | undefined {

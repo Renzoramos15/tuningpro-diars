@@ -13,7 +13,8 @@ export interface Pieza {
 }
 
 export interface DetalleProyecto {
-  id: number; proyectoId: number; piezaId: number; cantidad: number; precioUnitario: number;
+  id: number; proyectoId: number; piezaId: number; piezaNombre: string;
+  cantidad: number; precioUnitario: number;
 }
 
 export interface Proyecto {
@@ -67,5 +68,9 @@ export class PiezasService {
 
   cambiarEstado(proyectoId: number, estado: string): Observable<Proyecto> {
     return this.http.put<Proyecto>(`${this.api}/proyectos/${proyectoId}/estado`, { estado });
+  }
+  
+  getTransiciones(): Observable<Record<string, string[]>> {
+    return this.http.get<Record<string, string[]>>(`${this.api}/proyectos/transiciones`);
   }
 }

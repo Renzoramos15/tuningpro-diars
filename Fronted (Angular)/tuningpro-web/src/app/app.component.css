@@ -241,3 +241,12 @@ button:hover {
   font-weight: 700;
   letter-spacing: 0.5px;
 }
+
+.estado[data-estado="En pausa"] { background: #f1e8fb; color: #5b2a99; }
+.estado[data-estado="Cancelado"] { background: #eeeeee; color: #555; }
+.estado[data-estado="Rechazado"] { background: #fdeaea; color: #9b1c1c; }
+
+.menu { display: flex; flex-wrap: wrap; gap: 6px; border-bottom: 2px solid #ddd; margin: 12px 0; }
+.menu button { padding: 8px 16px; border: 1px solid #ccc; border-bottom: none; border-radius: 6px 6px 0 0;
+               background: #f0f0f0; cursor: pointer; font-weight: bold; }
+.menu button.activo { background: #1d3f9b; color: #fff; border-color: #1d3f9b; }

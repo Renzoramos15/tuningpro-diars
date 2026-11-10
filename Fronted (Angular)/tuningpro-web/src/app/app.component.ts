@@ -6,14 +6,17 @@ import { AuthService } from './auth.service';
 import { LoginComponent } from './login.component';
 import { PortalComponent } from './portal.component';
 import { OrdenesComponent } from './ordenes.component';
-import { GestionComponent } from './gestion.component';
 import { HistorialComponent } from './historial.component';
 import { ReportesComponent } from './reportes.component';
+import { GestionComponent } from './gestion.component';
+
+type Vista = 'inventario' | 'proyectos' | 'ordenes' | 'historial' | 'reportes' | 'gestion';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent, HistorialComponent, GestionComponent, ReportesComponent],
+  imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent,
+            HistorialComponent, ReportesComponent, GestionComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -26,6 +29,10 @@ export class AppComponent implements OnInit {
   mensaje = '';
   esError = false;
 
+  // Menú según el rol
+  menu: { id: Vista; texto: string }[] = [];
+  vista: Vista = 'inventario';
+
   vehiculoValidarId = 1;
   entradas: Record<number, number> = {};
 
@@ -36,50 +43,86 @@ export class AppComponent implements OnInit {
     proyectoId: null, piezaId: null, cantidad: 1
   };
 
+  transiciones: Record<string, string[]> = {};
+  nuevoEstado: Record<number, string> = {};
+
   constructor(private service: PiezasService, public auth: AuthService) {}
 
   ngOnInit() {
     if (this.auth.logueado) this.cargarTodo();
   }
 
-  // ---------- Permisos para la interfaz ----------
-  get esPersonal(): boolean {
-    return this.auth.puede('Administrador', 'Tecnico', 'Auxiliar', 'Recepcionista');
-  }
+  // ---------- Permisos para la interfaz (deben coincidir con los de la API) ----------
+  get esPersonal(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Auxiliar', 'Recepcionista'); }
+  get verInventario(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Auxiliar'); }
   get puedeValidar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
   get puedeEntradas(): boolean { return this.auth.puede('Administrador', 'Auxiliar'); }
-  get puedeCrearProyecto(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Recepcionista'); }
+  get verProyectos(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Recepcionista'); }
+  get puedeCrearProyecto(): boolean { return this.verProyectos; }
   get puedeAsignar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
-  get puedeFinalizar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
-  get puedeOrdenes(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Recepcionista'); }
+  get puedeFinalizar(): boolean { return this.puedeAsignar; }
+  get verOrdenes(): boolean { return this.auth.puede('Administrador', 'Recepcionista'); }
+  get verHistorial(): boolean { return this.verProyectos; }
+  get verReportes(): boolean { return this.auth.puede('Administrador'); }
+  get verGestion(): boolean { return this.esPersonal; }
 
-  // ---------- Sesión ----------
+  // ---------- Menú y sesión ----------
+  private prepararMenu() {
+    const todas: { id: Vista; texto: string; ver: boolean }[] = [
+      { id: 'inventario', texto: '📦 Inventario', ver: this.verInventario },
+      { id: 'proyectos', texto: '🛠 Proyectos', ver: this.verProyectos },
+      { id: 'ordenes', texto: '🧾 Órdenes de trabajo', ver: this.verOrdenes },
+      { id: 'historial', texto: '🚗 Historial técnico', ver: this.verHistorial },
+      { id: 'reportes', texto: '📄 Reportes', ver: this.verReportes },
+      { id: 'gestion', texto: '⚙ Gestión de datos', ver: this.verGestion }
+    ];
+    this.menu = todas.filter(t => t.ver).map(t => ({ id: t.id, texto: t.texto }));
+    if (!this.menu.some(m => m.id === this.vista)) {
+      this.vista = this.menu.length ? this.menu[0].id : 'inventario';
+    }
+  }
+
+  irA(v: Vista) {
+    this.vista = v;
+    this.mensaje = '';
+  }
+
   cerrarSesion() {
     this.auth.logout();
     this.vehiculos = []; this.piezas = []; this.proyectos = [];
     this.alertasIds = new Set();
+    this.transiciones = {}; this.nuevoEstado = {};
+    this.menu = [];
     this.mensaje = '';
   }
 
+  // ---------- Carga de datos (solo lo que el rol puede ver) ----------
   cargarTodo() {
     this.mensaje = '';
+    this.prepararMenu();
     if (!this.esPersonal) return;
 
-    this.service.getVehiculos().subscribe({
-      next: v => {
-        this.vehiculos = v;
-        if (v.length) {
-          this.vehiculoValidarId = v[0].id;
-          this.nuevoVehiculoId = v[0].id;
-        }
-      },
-      error: e => this.manejarError(e, 'No se pudo conectar con la API.')
-    });
-    this.recargarInventario();
-    this.recargarProyectos();
+    if (this.verProyectos) {
+      this.service.getVehiculos().subscribe({
+        next: v => {
+          this.vehiculos = v;
+          if (v.length) {
+            this.vehiculoValidarId = v[0].id;
+            this.nuevoVehiculoId = v[0].id;
+          }
+        },
+        error: e => this.manejarError(e, 'No se pudo conectar con la API.')
+      });
+      this.recargarProyectos();
+    }
+
+    if (this.verInventario) this.recargarInventario();
+
+    if (this.puedeFinalizar) {
+      this.service.getTransiciones().subscribe({ next: t => (this.transiciones = t) });
+    }
   }
 
-  // ---------- Carga de datos ----------
   recargarInventario() {
     this.service.getPiezas().subscribe({
       next: p => {
@@ -97,15 +140,21 @@ export class AppComponent implements OnInit {
     this.service.getProyectos().subscribe({
       next: p => {
         this.proyectos = p;
-        const existe = p.some(x => x.id === this.asignacion.proyectoId);
-        if (!existe) this.asignacion.proyectoId = p.length ? p[0].id : null;
+        p.forEach(x => { if (this.nuevoEstado[x.id] === undefined) this.nuevoEstado[x.id] = ''; });
+
+        const abiertos = this.proyectosAbiertos;
+        if (!abiertos.some(x => x.id === this.asignacion.proyectoId)) {
+          this.asignacion.proyectoId = abiertos.length ? abiertos[0].id : null;
+        }
       },
       error: e => this.manejarError(e, 'No se pudieron cargar los proyectos.')
     });
   }
+
+  // Se llama cuando el personal registra algo en "Gestión de datos"
   recargarMaestros() {
-    this.service.getVehiculos().subscribe({ next: v => (this.vehiculos = v) });
-    this.recargarInventario();
+    if (this.verProyectos) this.service.getVehiculos().subscribe({ next: v => (this.vehiculos = v) });
+    if (this.verInventario) this.recargarInventario();
   }
 
   // ---------- Compatibilidad ----------
@@ -171,21 +220,39 @@ export class AppComponent implements OnInit {
     });
   }
 
-  finalizar(p: Proyecto) {
-    this.service.cambiarEstado(p.id, 'Finalizado').subscribe({
+  // Proyectos que todavía admiten piezas
+  get proyectosAbiertos(): Proyecto[] {
+    return this.proyectos.filter(p => p.estado === 'Registrado' || p.estado === 'En proceso');
+  }
+
+  opcionesEstado(p: Proyecto): string[] {
+    return this.transiciones[p.estado] ?? [];
+  }
+
+  cambiarEstado(p: Proyecto) {
+    const estado = this.nuevoEstado[p.id];
+    if (!estado) {
+      this.mostrar('Elige el nuevo estado del proyecto.', true);
+      return;
+    }
+
+    if (estado === 'Cancelado' || estado === 'Rechazado') {
+      const aviso = p.detalles.length > 0 ? ' Las piezas asignadas volverán al inventario.' : '';
+      if (!confirm(`¿Marcar el proyecto "${p.nombre}" como ${estado.toLowerCase()}?${aviso}`)) return;
+    }
+
+    this.service.cambiarEstado(p.id, estado).subscribe({
       next: () => {
-        this.mostrar(`Proyecto "${p.nombre}" finalizado.`, false);
+        this.nuevoEstado[p.id] = '';
+        this.mostrar(`Proyecto "${p.nombre}": ahora está ${estado.toLowerCase()}.`, false);
         this.recargarProyectos();
+        this.recargarInventario();
       },
       error: e => this.manejarError(e, 'No se pudo cambiar el estado.')
     });
   }
 
   // ---------- Ayudas de presentación ----------
-  nombrePieza(id: number): string {
-    return this.piezas.find(x => x.id === id)?.nombre ?? `Pieza #${id}`;
-  }
-
   textoVehiculo(id: number): string {
     const v = this.vehiculos.find(x => x.id === id);
     return v ? `${v.marca} ${v.modelo} (${v.placa})` : `Vehículo #${id}`;
