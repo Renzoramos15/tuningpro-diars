@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from './api.config';
-import { AuthService } from './auth.service';
-import { mensajeError } from './errores';
+import { API_URL } from '../../core/api.config';
+import { AuthService } from '../../core/auth.service';
+import { mensajeError } from '../../core/errores';
 
 interface VehiculoItem { id: number; placa: string; marca: string; modelo: string; clienteNombre: string; }
 

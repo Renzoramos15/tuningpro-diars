@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Pieza, PiezasService, Proyecto, Vehiculo } from './piezas.service';
-import { AuthService } from './auth.service';
-import { LoginComponent } from './login.component';
-import { PortalComponent } from './portal.component';
-import { OrdenesComponent } from './ordenes.component';
-import { HistorialComponent } from './historial.component';
-import { ReportesComponent } from './reportes.component';
-import { GestionComponent } from './gestion.component';
+import { Pieza, PiezasService, Proyecto, Vehiculo } from './core/piezas.service';
+import { AuthService } from './core/auth.service';
+import { LoginComponent } from './features/auth/login.component';
+import { PortalComponent } from './features/portal/portal.component';
+import { OrdenesComponent } from './features/proyectos/ordenes.component';
+import { HistorialComponent } from './features/vehiculos/historial.component';
+import { ReportesComponent } from './features/reportes/reportes.component';
+import { GestionComponent } from './features/gestion/gestion.component';
 
 type Vista = 'inventario' | 'proyectos' | 'ordenes' | 'historial' | 'reportes' | 'gestion';
 

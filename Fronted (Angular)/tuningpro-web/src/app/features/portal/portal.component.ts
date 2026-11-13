@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { API_URL } from './api.config';
+import { API_URL } from '../../core/api.config';
 
 interface PortalVehiculo { id: number; placa: string; marca: string; modelo: string; anio: number; }
 interface PortalDetalle {

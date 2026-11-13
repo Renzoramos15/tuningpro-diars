@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
-import { API_URL } from './api.config';
-import { AuthService } from './auth.service';
-import { mensajeError } from './errores';
+import { API_URL } from '../../core/api.config';
+import { AuthService } from '../../core/auth.service';
+import { mensajeError } from '../../core/errores';
 
 interface PiezaItem {
   id: number; codigo: string; nombre: string; marca: string; categoria: string;

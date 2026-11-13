@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
-import { API_URL } from './api.config';
+import { API_URL } from '../../core/api.config';
 
 interface OrdenDetalle { pieza: string; cantidad: number; precioUnitario: number; subtotal: number; }
 interface Orden {

@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VehiculosComponent } from './vehiculos.component';
-import { CatalogoPiezasComponent } from './catalogo-piezas.component';
-import { ProveedoresComponent } from './proveedores.component';
-import { CompatibilidadesComponent } from './compatibilidades.component';
-import { AuthService } from './auth.service';
+import { VehiculosComponent } from '../vehiculos/vehiculos.component';
+import { CatalogoPiezasComponent } from '../inventario/catalogo-piezas.component';
+import { ProveedoresComponent } from '../inventario/proveedores.component';
+import { CompatibilidadesComponent } from '../vehiculos/compatibilidades.component';
+import { AuthService } from '../../core/auth.service';
 
 type Pestana = 'vehiculos' | 'piezas' | 'proveedores' | 'compatibilidades';
 
