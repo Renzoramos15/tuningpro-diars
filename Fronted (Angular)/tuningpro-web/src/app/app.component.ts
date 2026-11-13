@@ -10,6 +10,7 @@ import { OrdenesComponent } from './features/proyectos/ordenes.component';
 import { HistorialComponent } from './features/vehiculos/historial.component';
 import { ReportesComponent } from './features/reportes/reportes.component';
 import { GestionComponent } from './features/gestion/gestion.component';
+import { InventarioComponent } from './features/inventario/inventario.component';
 
 type Vista = 'inventario' | 'proyectos' | 'ordenes' | 'historial' | 'reportes' | 'gestion';
 
@@ -17,7 +18,7 @@ type Vista = 'inventario' | 'proyectos' | 'ordenes' | 'historial' | 'reportes' |
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule, LoginComponent, PortalComponent, OrdenesComponent,
-            HistorialComponent, ReportesComponent, GestionComponent],
+            HistorialComponent, ReportesComponent, GestionComponent, InventarioComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

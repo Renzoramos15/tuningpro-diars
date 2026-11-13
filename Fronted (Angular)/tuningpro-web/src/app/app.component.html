@@ -31,45 +31,7 @@
   <!-- ================= PERSONAL DEL TALLER ================= -->
   <ng-container *ngIf="esPersonal">
 
-    <!-- ========== INVENTARIO (Administrador, Técnico, Auxiliar) ========== -->
-    <section *ngIf="vista === 'inventario' && verInventario">
-      <h2>Inventario de piezas</h2>
-
-      <label *ngIf="puedeValidar">
-        Validar compatibilidad con:
-        <select [(ngModel)]="vehiculoValidarId">
-          <option *ngFor="let v of vehiculos" [ngValue]="v.id">
-            {{ v.marca }} {{ v.modelo }} ({{ v.placa }}) - {{ v.anio }}
-          </option>
-        </select>
-      </label>
-
-      <div class="tabla-scroll">
-        <table>
-          <tr>
-            <th>Código</th><th>Nombre</th><th>Categoría</th>
-            <th>Stock</th><th>Precio</th>
-            <th *ngIf="puedeValidar">Compatibilidad</th>
-            <th *ngIf="puedeEntradas">Registrar entrada</th>
-          </tr>
-          <tr *ngFor="let p of piezas" [class.stock-bajo]="esStockBajo(p)">
-            <td>{{ p.codigo }}</td>
-            <td>{{ p.nombre }}</td>
-            <td>{{ p.categoria }}</td>
-            <td>
-              {{ p.stock }}
-              <span *ngIf="esStockBajo(p)" class="etiqueta">⚠ Stock bajo</span>
-            </td>
-            <td>S/ {{ p.precioUnitario | number:'1.2-2' }}</td>
-            <td *ngIf="puedeValidar"><button (click)="validar(p.id)">Validar</button></td>
-            <td *ngIf="puedeEntradas">
-              <input type="number" min="1" placeholder="Cant." [(ngModel)]="entradas[p.id]" class="num" />
-              <button (click)="registrarEntrada(p)">+ Entrada</button>
-            </td>
-          </tr>
-        </table>
-      </div>
-    </section>
+    <app-inventario *ngIf="vista === 'inventario' && verInventario"></app-inventario>
 
     <!-- ========== PROYECTOS (Administrador, Técnico, Recepcionista) ========== -->
     <ng-container *ngIf="vista === 'proyectos' && verProyectos">
