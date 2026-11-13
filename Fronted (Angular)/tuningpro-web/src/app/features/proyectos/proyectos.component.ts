@@ -5,15 +5,15 @@ import { PiezasService } from '../../core/piezas.service';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
 import { Pieza, Proyecto, Vehiculo } from '../../core/models';
+import { AvisoComponent } from '../../shared/components/aviso.component';
+
 
 @Component({
   selector: 'app-proyectos',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AvisoComponent],
   template: `
-    <div *ngIf="mensaje" class="aviso" [class.error]="esError" [class.ok]="!esError">
-      {{ esError ? '❌' : '✅' }} {{ mensaje }}
-    </div>
+    <app-aviso [mensaje]="mensaje" [esError]="esError"></app-aviso>
 
     <section>
       <h2>Nuevo proyecto de personalización</h2>

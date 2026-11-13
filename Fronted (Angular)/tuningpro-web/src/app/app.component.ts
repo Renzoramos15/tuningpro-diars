@@ -3,8 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AuthService } from './core/auth.service';
 import { LoginComponent } from './features/auth/login.component';
-import { rutaInicial } from './app.routes';
-
+import { rutaInicial } from './core/guards/rol.guard';
 @Component({
   selector: 'app-root',
   standalone: true,
