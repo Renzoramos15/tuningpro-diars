@@ -1,0 +1,59 @@
+<div class="page-header">
+  <div>
+    <div class="eyebrow">Operaciones</div>
+    <h1>Proyectos</h1>
+    <p class="subtitle">Administra los ingresos y diagnósticos de vehículos.</p>
+  </div>
+  @if (puedeCrear) {
+    <a class="btn-primary" routerLink="/proyectos/nuevo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Nuevo proyecto
+    </a>
+  }
+</div>
+
+@if (mensaje) {
+  <div class="aviso" [class.error]="esError" [class.ok]="!esError">{{ mensaje }}</div>
+}
+
+<div class="card">
+  <div class="card-header">Listado de proyectos</div>
+
+  @if (cargando) {
+    <div class="card-footer">Cargando proyectos...</div>
+  } @else if (proyectos.length === 0) {
+    <div class="card-footer">Aún no hay proyectos registrados.</div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Proyecto</th><th>Cliente</th><th>Vehículo</th><th>Fecha</th><th>Total</th><th>Estado</th><th></th></tr>
+        </thead>
+        <tbody>
+          @for (p of proyectos; track p.id) {
+            <tr>
+              <td class="code">{{ p.codigo }}</td>
+              <td>{{ p.cliente || '—' }}</td>
+              <td>
+                {{ p.vehiculo }}
+                <div class="muted">{{ p.placa }}</div>
+              </td>
+              <td>{{ p.fechaIngreso | date:'dd MMM yyyy' }}</td>
+              <td class="code">S/ {{ p.total | number:'1.2-2' }}</td>
+              <td>
+                <span class="pill" [attr.data-estado]="p.estado">{{ p.estado }}</span>
+              </td>
+              <td class="actions">
+                <a class="icon-btn" [routerLink]="['/proyectos', p.id]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  Ver
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="card-footer">Mostrando {{ proyectos.length }} de {{ proyectos.length }} proyectos</div>
+  }
+</div>

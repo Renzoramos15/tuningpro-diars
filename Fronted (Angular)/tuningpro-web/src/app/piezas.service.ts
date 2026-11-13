@@ -19,7 +19,7 @@ export interface DetalleProyecto {
 
 export interface Proyecto {
   id: number; nombre: string; vehiculoId: number; estado: string;
-  fechaRegistro: string; detalles: DetalleProyecto[];
+  fechaIngreso: string; detalles: DetalleProyecto[];
 }
 
 export interface ResultadoValidacion {

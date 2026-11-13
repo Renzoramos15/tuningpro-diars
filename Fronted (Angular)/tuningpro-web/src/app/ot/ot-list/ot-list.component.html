@@ -1,0 +1,64 @@
+<div class="page-header">
+  <div class="eyebrow">Operaciones</div>
+  <h1>Seguimiento de órdenes</h1>
+  <p class="subtitle">Consulta el avance y actualiza el estado de los trabajos.</p>
+</div>
+
+@if (mensaje) {
+  <div class="aviso" [class.error]="esError" [class.ok]="!esError">{{ mensaje }}</div>
+}
+
+<div class="filtros">
+  <button type="button" class="chip" [class.activo]="filtro === 'Todos'" (click)="filtro = 'Todos'">
+    Todos <span class="contador">{{ contador('Todos') }}</span>
+  </button>
+  <button type="button" class="chip" [class.activo]="filtro === 'Registrado'" (click)="filtro = 'Registrado'">
+    Registrado <span class="contador">{{ contador('Registrado') }}</span>
+  </button>
+  <button type="button" class="chip" [class.activo]="filtro === 'En proceso'" (click)="filtro = 'En proceso'">
+    En proceso <span class="contador">{{ contador('En proceso') }}</span>
+  </button>
+  <button type="button" class="chip" [class.activo]="filtro === 'Finalizado'" (click)="filtro = 'Finalizado'">
+    Finalizado <span class="contador">{{ contador('Finalizado') }}</span>
+  </button>
+</div>
+
+<div class="buscador">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+  <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por OT, proyecto, cliente o placa...">
+</div>
+
+<div class="card">
+  @if (cargando) {
+    <div class="card-footer">Cargando órdenes de trabajo...</div>
+  } @else if (ordenesFiltradas.length === 0) {
+    <div class="card-footer">No se encontraron órdenes de trabajo.</div>
+  } @else {
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Código OT</th><th>Vehículo</th><th>Cliente</th><th>Proyecto</th><th>Técnico</th><th>Monto</th><th>Estado</th><th></th></tr>
+        </thead>
+        <tbody>
+          @for (o of ordenesFiltradas; track o.id) {
+            <tr>
+              <td class="code">{{ codigoOt(o.id) }}<div class="muted">{{ o.fechaCreacion | date:'dd MMM yyyy' }}</div></td>
+              <td>{{ o.vehiculoDescripcion }}<div class="muted">{{ o.vehiculoPlaca }}</div></td>
+              <td>{{ o.clienteNombre }}</td>
+              <td class="code">{{ o.proyectoCodigo }}</td>
+              <td>{{ o.tecnicoNombre }}</td>
+              <td class="code">S/ {{ totalGeneral(o) | number:'1.2-2' }}</td>
+              <td><span class="pill" [attr.data-estado]="o.estado">{{ o.estado }}</span></td>
+              <td class="actions">
+                <a class="icon-btn" [routerLink]="['/ordenes-trabajo', o.id]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+                  Detalle
+                </a>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

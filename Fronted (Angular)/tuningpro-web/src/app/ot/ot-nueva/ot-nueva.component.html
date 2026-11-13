@@ -1,0 +1,134 @@
+@if (cargando) {
+  <div class="estado-carga">Cargando datos del proyecto…</div>
+} @else if (error && !datos) {
+  <div class="estado-error">{{ error }}</div>
+} @else if (datos) {
+  <div class="encabezado">
+    <div>
+      <h1>Nueva orden de trabajo</h1>
+      <p class="subtitulo">Código sugerido: <strong>{{ datos.codigoSugerido }}</strong> · Proyecto {{ datos.proyectoCodigo }}</p>
+    </div>
+  </div>
+
+  @if (error) {
+    <div class="aviso-error">{{ error }}</div>
+  }
+
+  <div class="layout">
+    <div class="columna-principal">
+
+      <section class="tarjeta">
+        <h2>01 Información vinculada</h2>
+        <div class="grid-info">
+          <div><span class="etiqueta">Cliente</span><span class="valor">{{ datos.clienteNombre }}</span></div>
+          <div><span class="etiqueta">Vehículo</span><span class="valor">{{ datos.vehiculoDescripcion }}</span></div>
+          <div><span class="etiqueta">Placa</span><span class="valor">{{ datos.vehiculoPlaca }}</span></div>
+          <div>
+            <span class="etiqueta">Técnico responsable</span>
+            <select [(ngModel)]="tecnicoId" class="select-tecnico">
+              <option [ngValue]="null">Seleccionar técnico…</option>
+              @for (t of datos.tecnicos; track t.id) {
+                <option [ngValue]="t.id">{{ t.nombreCompleto }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @if (datos.problemasReportados.length > 0) {
+          <div class="tags">
+            @for (p of datos.problemasReportados; track p) {
+              <span class="tag">{{ p }}</span>
+            }
+          </div>
+        }
+      </section>
+
+      <section class="tarjeta">
+        <h2>02 Repuestos</h2>
+
+        <div class="buscador">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path>
+          </svg>
+          <input type="text" [(ngModel)]="busquedaRepuesto" placeholder="Buscar repuesto compatible por nombre o código…" />
+        </div>
+
+        @if (busquedaRepuesto) {
+          <div class="lista-sugerencias">
+            @for (p of repuestosFiltrados; track p.id) {
+              <button type="button" class="sugerencia" (click)="agregarRepuesto(p)">
+                <span>{{ p.codigo }} — {{ p.nombre }}</span>
+                <span class="precio">S/ {{ p.precioUnitario | number:'1.2-2' }} · stock {{ p.stock }}</span>
+              </button>
+            } @empty {
+              <div class="sin-resultados">Sin coincidencias.</div>
+            }
+          </div>
+        }
+
+        @if (lineas.length === 0) {
+          <div class="tabla-vacia">Aún no agregas repuestos a la orden.</div>
+        } @else {
+          <table class="tabla-repuestos">
+            <thead>
+              <tr><th>Código</th><th>Repuesto</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th><th></th></tr>
+            </thead>
+            <tbody>
+              @for (l of lineas; track l.piezaId) {
+                <tr>
+                  <td>{{ l.codigo }}</td>
+                  <td>{{ l.nombre }}</td>
+                  <td>
+                    <input type="number" min="1" [max]="l.stockDisponible" [ngModel]="l.cantidad"
+                           (ngModelChange)="ajustarCantidad(l, $event)" class="input-cantidad" />
+                  </td>
+                  <td>S/ {{ l.precioUnitario | number:'1.2-2' }}</td>
+                  <td>S/ {{ (l.cantidad * l.precioUnitario) | number:'1.2-2' }}</td>
+                  <td>
+                    <button type="button" class="boton-quitar" (click)="quitarRepuesto(l.piezaId)" title="Quitar">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </section>
+
+      <section class="tarjeta">
+        <h2>03 Mano de obra y observaciones</h2>
+        <div class="grid-info">
+          <div>
+            <span class="etiqueta">Mano de obra (S/)</span>
+            <input type="number" min="0" step="0.01" [(ngModel)]="manoObra" class="input-mano-obra" />
+          </div>
+        </div>
+        <div class="campo-observaciones">
+          <span class="etiqueta">Observaciones</span>
+          <textarea rows="3" [(ngModel)]="observaciones" placeholder="Detalles adicionales del trabajo a realizar…"></textarea>
+        </div>
+      </section>
+
+    </div>
+
+    <aside class="columna-lateral">
+      <div class="tarjeta resumen">
+        <h2>Resumen de costos</h2>
+        <div class="fila"><span>Subtotal repuestos</span><span>S/ {{ subtotal | number:'1.2-2' }}</span></div>
+        <div class="fila"><span>IGV (18%)</span><span>S/ {{ montoIgv | number:'1.2-2' }}</span></div>
+        <div class="fila"><span>Mano de obra</span><span>S/ {{ (manoObra || 0) | number:'1.2-2' }}</span></div>
+        <div class="fila total"><span>Total general</span><span>S/ {{ total | number:'1.2-2' }}</span></div>
+
+        <div class="acciones">
+          <button type="button" class="boton-guardar" [disabled]="!puedeGuardar" (click)="guardar()">
+            {{ guardando ? 'Guardando…' : 'Guardar orden' }}
+          </button>
+          <button type="button" class="boton-cancelar" (click)="cancelar()">Cancelar</button>
+        </div>
+      </div>
+    </aside>
+  </div>
+}

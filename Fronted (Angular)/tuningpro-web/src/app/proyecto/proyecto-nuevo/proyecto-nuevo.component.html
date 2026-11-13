@@ -1,0 +1,119 @@
+<p class="migas">PROYECTOS / NUEVO</p>
+<h1>Registrar nuevo proyecto</h1>
+<p class="sub">Completa los datos de recepción y los problemas reportados.</p>
+
+<div class="layout">
+  <section class="tarjeta">
+
+    <div class="seccion">
+      <div class="seccion-cab">
+        <span class="num">01</span>
+        <div><h2>Datos de recepción</h2><p>Información general del registro</p></div>
+      </div>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Número de proyecto</label>
+          <input type="text" [value]="info()?.codigo ?? ''" readonly />
+          <small>Generado automáticamente</small>
+        </div>
+        <div class="campo">
+          <label>Fecha de ingreso</label>
+          <input type="text" [value]="info() ? (info()!.fechaIngreso | date: 'dd/MM/yyyy') : ''" readonly />
+        </div>
+        <div class="campo">
+          <label>Recepcionista</label>
+          <input type="text" [value]="info()?.recepcionista ?? ''" readonly />
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion">
+      <div class="seccion-cab">
+        <span class="num">02</span>
+        <div><h2>Cliente y vehículo</h2><p>Relaciona el propietario y la unidad</p></div>
+      </div>
+      <div class="grid-2">
+        <div class="campo">
+          <label>Cliente <b>*</b></label>
+          <div class="con-boton">
+            <select [ngModel]="clienteId()" (ngModelChange)="onClienteChange($event)">
+              <option [ngValue]="null" disabled>Buscar o seleccionar cliente...</option>
+              @for (c of clientes(); track c.id) {
+                <option [ngValue]="c.id">{{ c.nombre }}</option>
+              }
+            </select>
+            <button type="button" class="btn-mas" title="Nuevo cliente">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+        <div class="campo">
+          <label>Vehículo <b>*</b></label>
+          <div class="con-boton">
+            <select [ngModel]="vehiculoId()" (ngModelChange)="vehiculoId.set($event)" [disabled]="!clienteId()">
+              <option [ngValue]="null" disabled>
+                {{ clienteId() ? 'Selecciona un vehículo...' : 'Primero selecciona un cliente' }}
+              </option>
+              @for (v of vehiculos(); track v.id) {
+                <option [ngValue]="v.id">{{ v.placa }} - {{ v.marca }} {{ v.modelo }}</option>
+              }
+            </select>
+            <button type="button" class="btn-mas" title="Nuevo vehículo" [disabled]="!clienteId()">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seccion">
+      <div class="seccion-cab">
+        <span class="num">03</span>
+        <div><h2>Problemas reportados</h2><p>Puedes seleccionar más de una opción</p></div>
+      </div>
+
+      <div class="grid-3">
+        @for (p of problemas(); track p.id) {
+          <label class="check" [class.marcado]="problemasSel().includes(p.id)">
+            <input type="checkbox"
+                   [checked]="problemasSel().includes(p.id)"
+                   (change)="toggleProblema(p.id, $any($event.target).checked)" />
+            <span>{{ p.nombre }}</span>
+          </label>
+        }
+      </div>
+
+      <div class="campo">
+        <label>Otros</label>
+        <input type="text" placeholder="Describe otro problema no incluido en la lista"
+               [ngModel]="otros()" (ngModelChange)="otros.set($event)" maxlength="200" />
+      </div>
+
+      <div class="campo">
+        <label>Notas de recepción</label>
+        <textarea rows="3" placeholder="Agrega detalles, síntomas o indicaciones del cliente..."
+                  [ngModel]="notas()" (ngModelChange)="notas.set($event)" maxlength="1000"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <aside class="resumen">
+    <h3>Resumen del proyecto</h3>
+    <dl>
+      <div><dt>Proyecto</dt><dd>{{ info()?.codigo ?? '-' }}</dd></div>
+      <div><dt>Cliente</dt><dd>{{ clienteSel()?.nombre ?? 'Por seleccionar' }}</dd></div>
+      <div><dt>Vehículo</dt><dd>{{ vehiculoSel() ? vehiculoSel()!.placa : 'Por seleccionar' }}</dd></div>
+      <div><dt>Problemas</dt><dd>{{ totalProblemas() }}</dd></div>
+    </dl>
+
+    @if (error()) {
+      <p class="error"><i class="fa-solid fa-circle-exclamation"></i> {{ error() }}</p>
+    }
+
+    <button type="button" class="btn btn-primario" [disabled]="!valido() || guardando()" (click)="guardar()">
+      @if (guardando()) { <i class="fa-solid fa-spinner fa-spin"></i> Guardando... }
+      @else { Guardar proyecto }
+    </button>
+    <a class="btn btn-borde" routerLink="/proyectos">Cancelar</a>
+  </aside>
+</div>

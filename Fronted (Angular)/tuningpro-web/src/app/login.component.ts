@@ -2,7 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -238,7 +238,7 @@ export class LoginComponent {
   error = '';
   cargando = false;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   entrar() {
     if (!this.usuario.trim() || !this.password) {
@@ -252,6 +252,7 @@ export class LoginComponent {
         this.cargando = false;
         this.password = '';
         this.ingreso.emit();
+        this.router.navigate(['/proyectos']);   // <-- esto faltaba
       },
       error: e => {
         this.cargando = false;

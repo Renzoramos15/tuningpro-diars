@@ -1,0 +1,73 @@
+:host { display: block; width: 100%; }
+
+.estado-carga, .estado-error { padding: 40px; text-align: center; color: #64748b; }
+.aviso-error {
+  background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca;
+  padding: 12px 16px; border-radius: 8px; margin-bottom: 16px; font-size: .9rem;
+}
+
+.encabezado { margin-bottom: 20px; }
+.encabezado h1 { margin: 0; font-size: 1.4rem; }
+.subtitulo { margin: 4px 0 0; color: #64748b; font-size: .9rem; }
+
+.layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+.tarjeta {
+  background: #fff; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 20px; margin-bottom: 20px;
+}
+.tarjeta h2 { margin: 0 0 16px; font-size: .95rem; color: #334155; }
+
+.grid-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; }
+.grid-info > div { display: flex; flex-direction: column; gap: 4px; }
+.etiqueta { font-size: .78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: .03em; }
+.valor { font-size: .95rem; color: #1e293b; font-weight: 500; }
+
+.select-tecnico, .input-mano-obra {
+  padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: .9rem;
+}
+
+.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.tag { background: #eef2ff; color: #4338ca; padding: 4px 10px; border-radius: 999px; font-size: .8rem; }
+
+.buscador {
+  display: flex; align-items: center; gap: 8px; border: 1px solid #cbd5e1;
+  border-radius: 8px; padding: 8px 12px; margin-bottom: 8px; color: #94a3b8;
+}
+.buscador input { border: none; outline: none; flex: 1; font-size: .9rem; }
+
+.lista-sugerencias {
+  border: 1px solid #e2e8f0; border-radius: 8px; margin-bottom: 16px; overflow: hidden;
+}
+.sugerencia {
+  display: flex; justify-content: space-between; width: 100%; padding: 10px 12px;
+  background: #fff; border: none; border-bottom: 1px solid #f1f5f9; cursor: pointer; text-align: left;
+}
+.sugerencia:hover { background: #f8fafc; }
+.sugerencia .precio { color: #64748b; font-size: .85rem; }
+.sin-resultados { padding: 12px; color: #94a3b8; font-size: .85rem; }
+
+.tabla-vacia { padding: 20px; text-align: center; color: #94a3b8; border: 1px dashed #e2e8f0; border-radius: 8px; }
+
+.tabla-repuestos { width: 100%; border-collapse: collapse; font-size: .88rem; }
+.tabla-repuestos th { text-align: left; color: #94a3b8; font-weight: 500; padding: 8px; border-bottom: 1px solid #e2e8f0; }
+.tabla-repuestos td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+.input-cantidad { width: 60px; padding: 4px 6px; border: 1px solid #cbd5e1; border-radius: 4px; }
+.boton-quitar { background: none; border: none; color: #94a3b8; cursor: pointer; padding: 4px; }
+.boton-quitar:hover { color: #ef4444; }
+
+.campo-observaciones { display: flex; flex-direction: column; gap: 4px; margin-top: 16px; }
+.campo-observaciones textarea {
+  border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; font-size: .9rem; resize: vertical; font-family: inherit;
+}
+
+.resumen .fila { display: flex; justify-content: space-between; padding: 6px 0; font-size: .9rem; color: #475569; }
+.resumen .fila.total { border-top: 1px solid #e2e8f0; margin-top: 8px; padding-top: 12px; font-weight: 600; color: #1e293b; font-size: 1rem; }
+
+.acciones { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
+.boton-guardar {
+  background: #4338ca; color: #fff; border: none; border-radius: 8px; padding: 10px; font-weight: 600; cursor: pointer;
+}
+.boton-guardar:disabled { background: #c7d2fe; cursor: not-allowed; }
+.boton-cancelar { background: #fff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 10px; cursor: pointer; }

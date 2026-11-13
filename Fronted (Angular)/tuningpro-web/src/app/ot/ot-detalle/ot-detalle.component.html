@@ -1,0 +1,106 @@
+@if (cargando) {
+  <p class="cargando">Cargando orden de trabajo...</p>
+} @else if (!orden) {
+  <div class="aviso error">{{ mensaje }}</div>
+} @else {
+  <div class="encabezado">
+    <div>
+      <a routerLink="/ordenes-trabajo" class="volver">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Volver al seguimiento
+      </a>
+      <div class="eyebrow">Detalle de orden</div>
+      <h1>{{ codigoOt(orden.id) }}</h1>
+      <p class="subtitle">{{ orden.proyectoCodigo }} · Creada el {{ orden.fechaCreacion | date:'dd MMM yyyy' }}</p>
+    </div>
+    <span class="pill" [attr.data-estado]="orden.estado">{{ orden.estado }}</span>
+  </div>
+
+  @if (mensaje) {
+    <div class="aviso" [class.error]="esError" [class.ok]="!esError">{{ mensaje }}</div>
+  }
+
+  <div class="layout-detalle">
+
+    <div class="columna-principal">
+
+      <div class="card">
+        <div class="card-titulo"><span class="badge">01</span> Información vinculada</div>
+
+        <div class="info-grid">
+          <div><div class="info-label">Cliente</div><div class="info-valor">{{ orden.clienteNombre }}</div></div>
+          <div><div class="info-label">Vehículo</div><div class="info-valor">{{ orden.vehiculoDescripcion }} · {{ orden.vehiculoPlaca }}</div></div>
+          <div><div class="info-label">Técnico</div><div class="info-valor">{{ orden.tecnicoNombre }}</div></div>
+        </div>
+
+        <div class="info-label" style="margin-top:18px;">Problemas reportados</div>
+        <div class="etiquetas">
+          @for (prob of orden.problemasReportados; track prob) {
+            <span class="etiqueta">{{ prob }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-titulo"><span class="badge">02</span> Detalle de repuestos</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Repuesto</th><th>Cantidad</th><th>Precio unit.</th><th>Subtotal</th></tr></thead>
+            <tbody>
+              @for (r of orden.repuestos; track r.id) {
+                <tr>
+                  <td>{{ r.piezaNombre }}<div class="muted">{{ r.piezaCodigo }}</div></td>
+                  <td>{{ r.cantidad }}</td>
+                  <td>S/ {{ r.precioUnitario | number:'1.2-2' }}</td>
+                  <td class="code">S/ {{ r.cantidad * r.precioUnitario | number:'1.2-2' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <div class="info-label" style="margin-top:18px;">Observaciones</div>
+        <p class="observaciones">{{ orden.observaciones || 'Sin observaciones.' }}</p>
+      </div>
+
+    </div>
+
+    <div class="columna-lateral">
+
+      <div class="card">
+        <div class="card-titulo">Resumen de costos</div>
+        <div class="resumen-linea"><span>Subtotal repuestos</span><span>S/ {{ subtotalRepuestos(orden) | number:'1.2-2' }}</span></div>
+        <div class="resumen-linea"><span>IGV (18%)</span><span>S/ {{ igv(orden) | number:'1.2-2' }}</span></div>
+        <div class="resumen-linea"><span>Mano de obra</span><span>S/ {{ orden.manoObra | number:'1.2-2' }}</span></div>
+        <div class="resumen-total">
+          <span>Total general</span>
+          <span class="total-valor">S/ {{ totalGeneral(orden) | number:'1.2-2' }}</span>
+        </div>
+        <div class="muted" style="margin-top:4px;">Importe incluido IGV</div>
+      </div>
+
+      <div class="card">
+        <div class="card-titulo">Actualizar estado</div>
+        <p class="nota">Registra el avance actual del servicio.</p>
+
+        @for (e of estados; track e) {
+          <button
+            type="button"
+            class="opcion-estado"
+            [class.seleccionada]="orden.estado === e"
+            [disabled]="!puedeCambiarEstado || guardandoEstado"
+            (click)="cambiarEstado(e)">
+            <span class="radio" [class.marcado]="orden.estado === e"></span>
+            {{ e }}
+          </button>
+        }
+
+        @if (!puedeCambiarEstado) {
+          <p class="nota-restriccion">Tu rol solo permite consultar el estado.</p>
+        }
+      </div>
+
+    </div>
+  </div>
+}

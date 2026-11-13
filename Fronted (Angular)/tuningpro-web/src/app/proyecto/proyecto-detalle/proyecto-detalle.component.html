@@ -1,0 +1,99 @@
+<a class="back" routerLink="/proyectos">‹ Volver a proyectos</a>
+
+@if (proyecto(); as p) {
+  <div class="head">
+    <div>
+      <div class="eyebrow">Detalle del proyecto</div>
+      <h1>{{ p.codigo }}</h1>
+      <p class="sub">Registrado el {{ p.fechaIngreso | date:'d MMM y' }} por {{ p.recepcionista || '—' }}</p>
+    </div>
+
+    <div class="acciones">
+      @if (!puedeGestionarOT()) {
+        <span class="hint">Solo técnico o administrador puede {{ tieneOrden() ? 'ver' : 'crear' }} una OT</span>
+      }
+      @if (tieneOrden()) {
+        <a class="btn-primary" [class.disabled]="!puedeGestionarOT()"
+           [routerLink]="puedeGestionarOT() ? ['/ordenes-trabajo'] : null"
+           [queryParams]="{ proyectoId: p.id }">Ver orden de trabajo</a>
+      } @else {
+        <a class="btn-primary" [class.disabled]="!puedeGestionarOT()"
+           [routerLink]="puedeGestionarOT() ? ['/ordenes-trabajo/nueva', p.id]  : null"
+           [queryParams]="{ proyectoId: p.id }">Crear orden de trabajo</a>
+      }
+    </div>
+  </div>
+
+  <div class="layout">
+    <div class="card pad">
+      <div class="sec"><span class="num">01</span> Cliente y vehículo</div>
+      <div class="dos">
+        <div class="info">
+          <span class="lbl">Cliente</span>
+          <strong>{{ p.cliente || '—' }}</strong>
+        </div>
+        <div class="info">
+          <span class="lbl">Vehículo</span>
+          <strong>{{ p.vehiculo }}</strong>
+          <small>{{ p.placa }}</small>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="sec"><span class="num">02</span> Diagnóstico inicial</div>
+      <span class="lbl">Problemas reportados</span>
+      <div class="chips">
+        @for (x of p.problemas; track x) {
+          <span class="chip">{{ x }}</span>
+        }
+        @if (p.otrosProblema) {
+          <span class="chip">Otros: {{ p.otrosProblema }}</span>
+        }
+        @if (p.problemas.length === 0 && !p.otrosProblema) {
+          <span class="muted">Sin problemas registrados</span>
+        }
+      </div>
+
+      <span class="lbl">Notas de recepción</span>
+      <div class="notas">{{ p.notasRecepcion || 'Sin notas.' }}</div>
+
+      <hr />
+      <div class="total">
+        <span class="lbl">Total de piezas</span>
+        <strong>S/ {{ p.total | number:'1.2-2' }}</strong>
+      </div>
+    </div>
+
+    <div class="card pad">
+      <h3>Historial del proyecto</h3>
+      <ol class="timeline">
+        <li class="hecho">
+          <span class="dot">✓</span>
+          <div>
+            <strong>Proyecto registrado</strong>
+            <small>{{ p.fechaIngreso | date:'d MMM y' }} · {{ p.recepcionista }}</small>
+          </div>
+        </li>
+        <li [class.hecho]="tieneOrden()">
+          <span class="dot">{{ tieneOrden() ? '✓' : '2' }}</span>
+          <div>
+            <strong>Orden de trabajo</strong>
+            <small>{{ tieneOrden() ? 'Generada' : 'Pendiente de creación' }}</small>
+          </div>
+        </li>
+        <li>
+          <span class="dot">3</span>
+          <div>
+            <strong>Servicio finalizado</strong>
+            <small>Pendiente</small>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </div>
+} @else if (cargando()) {
+  <div class="card pad">Cargando proyecto...</div>
+} @else if (error()) {
+  <div class="card pad error">{{ error() }}</div>
+}

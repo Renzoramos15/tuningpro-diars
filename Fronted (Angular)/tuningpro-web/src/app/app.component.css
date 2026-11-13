@@ -15,14 +15,6 @@ app-root {
   min-height: 100vh;
 }
 
-:host { 
-  display: block; 
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-  padding: 24px; 
-  max-width: 1100px; 
-  margin: 0 auto; 
-}
-
 h1 { 
   margin-bottom: 16px; 
   font-size: 24px;
