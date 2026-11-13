@@ -4,25 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../core/api.config';
 import { mensajeError } from '../../core/errores';
-
-interface VehiculoItem { id: number; placa: string; marca: string; modelo: string; clienteNombre: string; }
-
-interface HistorialPieza {
-  codigo: string; pieza: string; categoria: string; marca: string;
-  cantidad: number; precioUnitario: number; subtotal: number;
-}
-interface HistorialOrden {
-  id: number; fechaEmision: string; manoObra: number; totalPiezas: number; total: number; emitidaPor: string;
-}
-interface HistorialProyecto {
-  id: number; nombre: string; estado: string; fechaRegistro: string;
-  piezas: HistorialPieza[]; totalPiezas: number; orden: HistorialOrden | null;
-}
-interface Historial {
-  id: number; placa: string; marca: string; modelo: string; anio: number; cliente: string;
-  totalProyectos: number; totalPiezasInstaladas: number; inversionTotal: number;
-  proyectos: HistorialProyecto[];
-}
+import { Vehiculo, Historial } from '../../core/models';
 
 @Component({
   selector: 'app-historial',
@@ -157,7 +139,7 @@ interface Historial {
   `]
 })
 export class HistorialComponent implements OnInit {
-  vehiculos: VehiculoItem[] = [];
+  vehiculos: Vehiculo[] = [];
   vehiculoId: number | null = null;
   historial: Historial | null = null;
 
@@ -170,7 +152,7 @@ export class HistorialComponent implements OnInit {
 
   cargarVehiculos() {
     this.cargando = true;
-    this.http.get<VehiculoItem[]>(`${API_URL}/vehiculos`).subscribe({
+    this.http.get<Vehiculo[]>(`${API_URL}/vehiculos`).subscribe({
       next: v => {
         this.vehiculos = v;
         if (!v.some(x => x.id === this.vehiculoId)) {

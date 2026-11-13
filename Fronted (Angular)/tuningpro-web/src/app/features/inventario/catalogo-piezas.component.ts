@@ -6,12 +6,8 @@ import { forkJoin } from 'rxjs';
 import { API_URL } from '../../core/api.config';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
+import { Pieza, Proveedor } from '../../core/models';
 
-interface PiezaItem {
-  id: number; codigo: string; nombre: string; marca: string; categoria: string;
-  stock: number; precioUnitario: number; proveedorId: number;
-}
-interface ProveedorItem { id: number; nombre: string; contacto: string; }
 
 @Component({
   selector: 'app-catalogo-piezas',
@@ -228,8 +224,8 @@ export class CatalogoPiezasComponent implements OnInit {
 
   categorias = ['Frenos', 'Suspensión', 'Turbo', 'General'];
 
-  piezas: PiezaItem[] = [];
-  proveedores: ProveedorItem[] = [];
+  piezas: Pieza[] = [];
+  proveedores: Proveedor[] = [];
 
   id: number | null = null;
   codigo = '';
@@ -251,8 +247,8 @@ export class CatalogoPiezasComponent implements OnInit {
 
   cargar() {
     forkJoin({
-      piezas: this.http.get<PiezaItem[]>(`${API_URL}/piezas`),
-      proveedores: this.http.get<ProveedorItem[]>(`${API_URL}/proveedores`)
+      piezas: this.http.get<Pieza[]>(`${API_URL}/piezas`),
+      proveedores: this.http.get<Proveedor[]>(`${API_URL}/proveedores`)
     }).subscribe({
       next: r => {
         this.piezas = r.piezas;
@@ -267,7 +263,7 @@ export class CatalogoPiezasComponent implements OnInit {
     return this.proveedores.find(p => p.id === id)?.nombre ?? `Proveedor #${id}`;
   }
 
-  editar(p: PiezaItem) {
+  editar(p: Pieza) {
     this.id = p.id;
     this.codigo = p.codigo;
     this.nombre = p.nombre;
@@ -302,8 +298,8 @@ export class CatalogoPiezasComponent implements OnInit {
     };
     const eraNueva = this.id == null;
     const peticion = eraNueva
-      ? this.http.post<PiezaItem>(`${API_URL}/piezas`, cuerpo)
-      : this.http.put<PiezaItem>(`${API_URL}/piezas/${this.id}`, cuerpo);
+      ? this.http.post<Pieza>(`${API_URL}/piezas`, cuerpo)
+      : this.http.put<Pieza>(`${API_URL}/piezas/${this.id}`, cuerpo);
 
     peticion.subscribe({
       next: p => {

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Pieza, PiezasService, Proyecto, Vehiculo } from './core/piezas.service';
+import { PiezasService } from './core/piezas.service';
+import { Pieza, Proyecto, Vehiculo } from './core/models';
 import { AuthService } from './core/auth.service';
 import { LoginComponent } from './features/auth/login.component';
 import { PortalComponent } from './features/portal/portal.component';

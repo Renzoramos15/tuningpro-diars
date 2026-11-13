@@ -5,5 +5,6 @@ export interface Pieza {
   marca: string;
   categoria: string; 
   stock: number; 
-  precioUnitario: number;
+  precioUnitario: number; 
+  proveedorId: number;
 }

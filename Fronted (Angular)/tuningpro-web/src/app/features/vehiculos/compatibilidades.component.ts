@@ -6,9 +6,8 @@ import { forkJoin } from 'rxjs';
 import { API_URL } from '../../core/api.config';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
+import { Vehiculo, Pieza } from '../../core/models';
 
-interface VehiculoItem { id: number; placa: string; marca: string; modelo: string; anio: number; }
-interface PiezaItem { id: number; codigo: string; nombre: string; marca: string; categoria: string; stock: number; }
 
 @Component({
   selector: 'app-compatibilidades',
@@ -207,9 +206,9 @@ interface PiezaItem { id: number; codigo: string; nombre: string; marca: string;
 export class CompatibilidadesComponent implements OnInit {
   @Output() cambio = new EventEmitter<void>();
 
-  vehiculos: VehiculoItem[] = [];
-  piezas: PiezaItem[] = [];
-  compatibles: PiezaItem[] = [];
+  vehiculos: Vehiculo[] = [];
+  piezas: Pieza[] = [];
+  compatibles: Pieza[] = [];
 
   vehiculoId: number | null = null;
   piezaId: number | null = null;
@@ -221,14 +220,14 @@ export class CompatibilidadesComponent implements OnInit {
 
   get puedeEditar(): boolean { return this.auth.puede('Administrador', 'Tecnico'); }
 
-  get disponibles(): PiezaItem[] {
+  get disponibles(): Pieza[] {
     return this.piezas.filter(p => !this.compatibles.some(c => c.id === p.id));
   }
 
   ngOnInit() {
     forkJoin({
-      vehiculos: this.http.get<VehiculoItem[]>(`${API_URL}/vehiculos`),
-      piezas: this.http.get<PiezaItem[]>(`${API_URL}/piezas`)
+      vehiculos: this.http.get<Vehiculo[]>(`${API_URL}/vehiculos`),
+      piezas: this.http.get<Pieza[]>(`${API_URL}/piezas`)
     }).subscribe({
       next: r => {
         this.vehiculos = r.vehiculos;
@@ -247,7 +246,7 @@ export class CompatibilidadesComponent implements OnInit {
 
   cargarCompatibles() {
     if (this.vehiculoId == null) return;
-    this.http.get<PiezaItem[]>(`${API_URL}/compatibilidad`, { params: { vehiculoId: this.vehiculoId } }).subscribe({
+    this.http.get<Pieza[]>(`${API_URL}/compatibilidad`, { params: { vehiculoId: this.vehiculoId } }).subscribe({
       next: c => {
         this.compatibles = c;
         this.piezaId = this.disponibles.length ? this.disponibles[0].id : null;
@@ -271,7 +270,7 @@ export class CompatibilidadesComponent implements OnInit {
     });
   }
 
-  quitar(p: PiezaItem) {
+  quitar(p: Pieza) {
     if (this.vehiculoId == null) return;
     if (!confirm(`¿Quitar "${p.nombre}" de las piezas compatibles de este vehículo?`)) return;
 

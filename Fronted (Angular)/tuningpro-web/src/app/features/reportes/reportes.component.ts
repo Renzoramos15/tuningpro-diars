@@ -5,8 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../core/api.config';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
-
-interface VehiculoItem { id: number; placa: string; marca: string; modelo: string; clienteNombre: string; }
+import { Vehiculo } from '../../core/models';
 
 @Component({
   selector: 'app-reportes',
@@ -79,7 +78,7 @@ interface VehiculoItem { id: number; placa: string; marca: string; modelo: strin
   `]
 })
 export class ReportesComponent implements OnInit {
-  vehiculos: VehiculoItem[] = [];
+  vehiculos: Vehiculo[] = [];
   vehiculoId: number | null = null;
 
   ocupado: string | null = null;
@@ -92,7 +91,7 @@ export class ReportesComponent implements OnInit {
   get puedeProyectos(): boolean { return this.auth.puede('Administrador', 'Tecnico', 'Recepcionista'); }
 
   ngOnInit() {
-    this.http.get<VehiculoItem[]>(`${API_URL}/vehiculos`).subscribe({
+    this.http.get<Vehiculo[]>(`${API_URL}/vehiculos`).subscribe({
       next: v => {
         this.vehiculos = v;
         if (v.length) this.vehiculoId = v[0].id;

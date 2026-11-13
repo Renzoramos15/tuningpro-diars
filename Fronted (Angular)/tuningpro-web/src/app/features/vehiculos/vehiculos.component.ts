@@ -5,12 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../core/api.config';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
-
-interface VehiculoItem {
-  id: number; placa: string; marca: string; modelo: string; anio: number;
-  clienteNombre: string; usuarioId: number | null;
-}
-interface ClienteCuenta { id: number; nombreUsuario: string; nombreCompleto: string; }
+import { Vehiculo, ClienteCuenta } from '../../core/models';
 
 @Component({
   selector: 'app-vehiculos',
@@ -233,7 +228,7 @@ interface ClienteCuenta { id: number; nombreUsuario: string; nombreCompleto: str
 export class VehiculosComponent implements OnInit {
   @Output() cambio = new EventEmitter<void>();
 
-  vehiculos: VehiculoItem[] = [];
+  vehiculos: Vehiculo[] = [];
   clientes: ClienteCuenta[] = [];
   buscar = '';
 
@@ -266,7 +261,7 @@ export class VehiculosComponent implements OnInit {
     const params: Record<string, string> = {};
     if (this.buscar.trim()) params['buscar'] = this.buscar.trim();
 
-    this.http.get<VehiculoItem[]>(`${API_URL}/vehiculos`, { params }).subscribe({
+    this.http.get<Vehiculo[]>(`${API_URL}/vehiculos`, { params }).subscribe({
       next: v => (this.vehiculos = v),
       error: e => this.mostrar(mensajeError(e, 'No se pudieron cargar los vehículos.'), true)
     });
@@ -277,12 +272,12 @@ export class VehiculosComponent implements OnInit {
     this.cargar();
   }
 
-  cuenta(v: VehiculoItem): string {
+  cuenta(v: Vehiculo): string {
     const c = this.clientes.find(x => x.id === v.usuarioId);
     return c ? c.nombreUsuario : 'Vinculado';
   }
 
-  editar(v: VehiculoItem) {
+  editar(v: Vehiculo) {
     this.id = v.id;
     this.placa = v.placa;
     this.marca = v.marca;
@@ -311,8 +306,8 @@ export class VehiculosComponent implements OnInit {
     };
     const eraNuevo = this.id == null;
     const peticion = eraNuevo
-      ? this.http.post<VehiculoItem>(`${API_URL}/vehiculos`, cuerpo)
-      : this.http.put<VehiculoItem>(`${API_URL}/vehiculos/${this.id}`, cuerpo);
+      ? this.http.post<Vehiculo>(`${API_URL}/vehiculos`, cuerpo)
+      : this.http.put<Vehiculo>(`${API_URL}/vehiculos/${this.id}`, cuerpo);
 
     peticion.subscribe({
       next: v => {

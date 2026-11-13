@@ -5,8 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../core/api.config';
 import { AuthService } from '../../core/auth.service';
 import { mensajeError } from '../../core/errores';
+import { Proveedor } from '../../core/models';
 
-interface ProveedorItem { id: number; nombre: string; contacto: string; }
 
 @Component({
   selector: 'app-proveedores',
@@ -179,7 +179,7 @@ interface ProveedorItem { id: number; nombre: string; contacto: string; }
 export class ProveedoresComponent implements OnInit {
   @Output() cambio = new EventEmitter<void>();
 
-  proveedores: ProveedorItem[] = [];
+  proveedores: Proveedor[] = [];
   id: number | null = null;
   nombre = '';
   contacto = '';
@@ -194,13 +194,13 @@ export class ProveedoresComponent implements OnInit {
   ngOnInit() { this.cargar(); }
 
   cargar() {
-    this.http.get<ProveedorItem[]>(`${API_URL}/proveedores`).subscribe({
+    this.http.get<Proveedor[]>(`${API_URL}/proveedores`).subscribe({
       next: p => (this.proveedores = p),
       error: e => this.mostrar(mensajeError(e, 'No se pudieron cargar los proveedores.'), true)
     });
   }
 
-  editar(p: ProveedorItem) {
+  editar(p: Proveedor) {
     this.id = p.id;
     this.nombre = p.nombre;
     this.contacto = p.contacto;
@@ -217,8 +217,8 @@ export class ProveedoresComponent implements OnInit {
     const cuerpo = { nombre: this.nombre, contacto: this.contacto };
     const eraNuevo = this.id == null;
     const peticion = eraNuevo
-      ? this.http.post<ProveedorItem>(`${API_URL}/proveedores`, cuerpo)
-      : this.http.put<ProveedorItem>(`${API_URL}/proveedores/${this.id}`, cuerpo);
+      ? this.http.post<Proveedor>(`${API_URL}/proveedores`, cuerpo)
+      : this.http.put<Proveedor>(`${API_URL}/proveedores/${this.id}`, cuerpo);
 
     peticion.subscribe({
       next: p => {

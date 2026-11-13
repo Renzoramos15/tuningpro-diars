@@ -4,8 +4,6 @@ import { Observable } from 'rxjs';
 import { API_URL } from './api.config';
 import { Vehiculo, Pieza, Proyecto, ResultadoValidacion } from './models';
 
-export * from './models';
-
 @Injectable({ providedIn: 'root' })
 export class PiezasService {
   private api = API_URL;

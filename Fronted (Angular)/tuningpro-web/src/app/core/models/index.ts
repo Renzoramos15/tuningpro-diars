@@ -5,3 +5,5 @@ export * from './compatibilidad.model';
 export * from './sesion.model';
 export * from './portal.model';
 export * from './orden.model';
+export * from './proveedor.model';
+export * from './historial.model';

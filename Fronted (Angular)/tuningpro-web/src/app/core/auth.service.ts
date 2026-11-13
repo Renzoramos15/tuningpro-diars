@@ -4,9 +4,6 @@ import { Observable, tap } from 'rxjs';
 import { API_URL } from './api.config';
 import { Sesion } from './models';
 
-export type { Sesion } from './models';
-
-
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private clave = 'tuningpro_sesion';
