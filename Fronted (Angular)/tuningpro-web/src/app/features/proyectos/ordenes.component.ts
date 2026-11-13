@@ -4,18 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { API_URL } from '../../core/api.config';
+import { Orden, Proyecto, Vehiculo } from '../../core/models';
 
-interface OrdenDetalle { pieza: string; cantidad: number; precioUnitario: number; subtotal: number; }
-interface Orden {
-  id: number; proyectoId: number; proyecto: string; vehiculo: string; cliente: string;
-  fechaEmision: string; piezas: OrdenDetalle[]; manoObra: number; totalPiezas: number;
-  total: number; observaciones: string; emitidaPor: string;
-}
-interface ProyectoLite {
-  id: number; nombre: string; vehiculoId: number; estado: string;
-  detalles: { cantidad: number; precioUnitario: number }[];
-}
-interface VehiculoLite { id: number; placa: string; marca: string; modelo: string; }
 
 @Component({
   selector: 'app-ordenes',
@@ -206,8 +196,8 @@ interface VehiculoLite { id: number; placa: string; marca: string; modelo: strin
 })
 export class OrdenesComponent implements OnInit {
   ordenes: Orden[] = [];
-  proyectos: ProyectoLite[] = [];
-  vehiculos: VehiculoLite[] = [];
+  proyectos: Proyecto[] = [];
+  vehiculos: Vehiculo[] = [];
 
   proyectoId: number | null = null;
   manoObra: number | null = 0;
@@ -221,14 +211,14 @@ export class OrdenesComponent implements OnInit {
 
   ngOnInit() { this.cargar(); }
 
-  get pendientes(): ProyectoLite[] {
+  get pendientes(): Proyecto[] {
     const conOrden = new Set(this.ordenes.map(o => o.proyectoId));
     return this.proyectos.filter(p =>
       p.detalles.length > 0 && !conOrden.has(p.id) &&
       p.estado !== 'Cancelado' && p.estado !== 'Rechazado');
   }
 
-  get seleccionado(): ProyectoLite | undefined {
+  get seleccionado(): Proyecto | undefined {
     return this.pendientes.find(p => p.id === this.proyectoId);
   }
 
@@ -241,7 +231,7 @@ export class OrdenesComponent implements OnInit {
     this.cargando = true;
     forkJoin({
       ordenes: this.http.get<Orden[]>(`${API_URL}/ordenes`),
-      proyectos: this.http.get<ProyectoLite[]>(`${API_URL}/proyectos`)
+      proyectos: this.http.get<Proyecto[]>(`${API_URL}/proyectos`)
     }).subscribe({
       next: r => {
         this.ordenes = r.ordenes;
@@ -278,7 +268,7 @@ export class OrdenesComponent implements OnInit {
     });
   }
 
-  totalPiezas(p: ProyectoLite): number {
+  totalPiezas(p: Proyecto): number {
     return p.detalles.reduce((s, d) => s + d.cantidad * d.precioUnitario, 0);
   }
 

@@ -2,19 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../core/api.config';
+import { PortalResumen } from '../../core/models';
 
-interface PortalVehiculo { id: number; placa: string; marca: string; modelo: string; anio: number; }
-interface PortalDetalle {
-  pieza: string; categoria: string; cantidad: number; precioUnitario: number; subtotal: number;
-}
-interface PortalOrden {
-  fechaEmision: string; manoObra: number; totalPiezas: number; total: number;
-}
-interface PortalProyecto {
-  id: number; nombre: string; vehiculo: string; estado: string;
-  fechaRegistro: string; piezas: PortalDetalle[]; total: number; orden: PortalOrden | null;
-}
-interface PortalResumen { cliente: string; vehiculos: PortalVehiculo[]; proyectos: PortalProyecto[]; }
 
 @Component({
   selector: 'app-portal',

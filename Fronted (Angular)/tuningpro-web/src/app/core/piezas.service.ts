@@ -6,29 +6,6 @@ import { Vehiculo, Pieza, Proyecto, ResultadoValidacion } from './models';
 
 export * from './models';
 
-export interface Vehiculo {
-  id: number; placa: string; marca: string; modelo: string; anio: number; clienteNombre: string;
-}
-
-export interface Pieza {
-  id: number; codigo: string; nombre: string; marca: string;
-  categoria: string; stock: number; precioUnitario: number;
-}
-
-export interface DetalleProyecto {
-  id: number; proyectoId: number; piezaId: number; piezaNombre: string;
-  cantidad: number; precioUnitario: number;
-}
-
-export interface Proyecto {
-  id: number; nombre: string; vehiculoId: number; estado: string;
-  fechaRegistro: string; detalles: DetalleProyecto[];
-}
-
-export interface ResultadoValidacion {
-  esCompatible: boolean; mensaje: string;
-}
-
 @Injectable({ providedIn: 'root' })
 export class PiezasService {
   private api = API_URL;
