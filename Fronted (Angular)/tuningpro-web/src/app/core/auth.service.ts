@@ -2,14 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { API_URL } from './api.config';
+import { Sesion } from './models';
 
-export interface Sesion {
-  token: string;
-  nombreUsuario: string;
-  nombreCompleto: string;
-  rol: string;
-  expira: string;
-}
+export type { Sesion } from './models';
+
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
